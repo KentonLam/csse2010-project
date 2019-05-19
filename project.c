@@ -105,7 +105,7 @@ void new_game(void) {
 }
 
 void play_game(void) {
-	uint32_t current_time, last_move_time;
+	uint32_t current_time, last_proj_move, last_asteroid_move;
 	int8_t button;
 	char serial_input, escape_sequence_char;
 	uint8_t characters_into_escape_sequence = 0;
@@ -113,7 +113,8 @@ void play_game(void) {
 	// Get the current time and remember this as the last time the projectiles
     // were moved.
 	current_time = get_current_time();
-	last_move_time = current_time;
+	last_proj_move = current_time;
+	last_asteroid_move = current_time;
 	
 	// We play the game until it's over
 	while(!is_game_over()) {
@@ -183,14 +184,18 @@ void play_game(void) {
 		// do nothing
 		
 		current_time = get_current_time();
-		if(!is_game_over() && current_time >= last_move_time + 500) {
+		if(!is_game_over() && current_time >= last_proj_move + 200) {
 			// 500ms (0.5 second) has passed since the last time we moved
 			// the projectiles - move them - and keep track of the time we 
 			// moved them
 			advance_projectiles();
-			
-			last_move_time = current_time;
+			last_proj_move = current_time;
 		}
+		if(!is_game_over() && current_time >= last_asteroid_move + 2001) {
+			advance_asteroids();
+			last_asteroid_move = current_time;
+		}
+		
 	}
 	// We get here if the game is over.
 }

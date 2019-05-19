@@ -88,6 +88,8 @@ uint8_t		asteroids[MAX_ASTEROIDS];
 static int8_t asteroid_at(uint8_t x, uint8_t y);
 static int8_t projectile_at(uint8_t x, uint8_t y);
 
+static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
+
 // Remove the asteroid/projectile at the given index number. If
 // the index is not valid, then no removal is performed. This 
 // enables the functions to be used like:
@@ -196,6 +198,7 @@ int8_t fire_projectile(void) {
 		newProjectileNumber = numProjectiles++;
 		projectiles[newProjectileNumber] = GAME_POSITION(basePosition, 2);
 		redraw_projectile(newProjectileNumber, COLOUR_PROJECTILE);
+		check_asteroid_hit(newProjectileNumber, asteroid_at(basePosition, 2));
 		return 1;
 	} else {
 		return 0;
@@ -207,8 +210,6 @@ int8_t fire_projectile(void) {
 void advance_projectiles(void) {
 	uint8_t x, y;
 	int8_t projectileNumber;
-	
-	int8_t asteroidHit;
 
 	projectileNumber = 0;
 	while(projectileNumber < numProjectiles) {
@@ -236,13 +237,9 @@ void advance_projectiles(void) {
 			continue;
 		}
 		
-		asteroidHit = asteroid_at(x, y);
-		if (asteroidHit != -1) {
-			remove_projectile(projectileNumber);	
-			remove_asteroid(asteroidHit);
-			add_to_score(1);
+		if (check_asteroid_hit(projectileNumber, asteroid_at(x, y)))
 			continue;
-		}
+			
 		// Projectile is not going off the top of the display
 		// CHECK HERE IF THE NEW PROJECTILE LOCATION CORRESPONDS TO
 		// AN ASTEROID LOCATION. IF IT DOES, REMOVE THE PROJECTILE
@@ -264,6 +261,38 @@ void advance_projectiles(void) {
 		// next projectile (if any) will take on the same projectile number)
 		projectileNumber++;
 	}
+}
+
+int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit) {
+	if (projectileIndex == -1 || asteroidHit == -1)
+		return 0;
+	remove_projectile(projectileIndex);
+	remove_asteroid(asteroidHit);
+	add_to_score(1);
+	return 1;
+}
+
+void advance_asteroids() {
+	int8_t x, y, new_y;
+	uint8_t i = 0;
+	while (i < numAsteroids) {
+		x = GET_X_POSITION(asteroids[i]);
+		y = GET_Y_POSITION(asteroids[i]);
+		
+		new_y = y-1;
+		if (new_y < 0) {
+			remove_asteroid(i);
+			continue;
+		}
+		if (check_asteroid_hit(projectile_at(x, new_y), i))
+			continue;
+		
+		redraw_asteroid(i, COLOUR_BLACK);
+		asteroids[i] = GAME_POSITION(x, new_y);
+		redraw_asteroid(i, COLOUR_ASTEROID);
+		i++;
+	}
+	redraw_base(COLOUR_BASE);
 }
 
 // Returns 1 if the game is over, 0 otherwise. Initially, the game is

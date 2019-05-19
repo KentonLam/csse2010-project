@@ -47,6 +47,8 @@ int8_t fire_projectile(void);
 // go off the top or that hit an asteroid are removed.
 void advance_projectiles(void);
 
+void advance_asteroids(void);
+
 // Returns 1 if the game is over, 0 otherwise
 int8_t is_game_over(void);
 

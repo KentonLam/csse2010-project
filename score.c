@@ -12,7 +12,7 @@
 uint8_t seven_seg[10] = { 63,6,91,79,102,109,125,7,127,111};
 	
 uint32_t score = -1;
-uint8_t right = 0;
+uint8_t left = 0;
 
 static void print_score();
 
@@ -45,12 +45,16 @@ void update_score_ssd(void) {
 		return;
 		
 	uint8_t digit = 0;
-	if (right) {
+	if (left) {
 		digit = (score/10)%10;
 	} else {
 		digit = score % 10;
 	}	
-	PORTD = (PORTD&~(1<<PORTD2)) | (right << PORTD2);
-	PORTC = seven_seg[digit];
-	right ^= 1;
+	PORTD = (PORTD&~(1<<PORTD2)) | (left << PORTD2);
+	if (left && digit == 0) {
+		PORTC = 0;
+	} else {
+		PORTC = seven_seg[digit];
+	}
+	left ^= 1;
 }

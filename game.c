@@ -94,6 +94,8 @@ static int8_t projectile_at(uint8_t x, uint8_t y);
 static void remove_asteroid(int8_t asteroidIndex);
 static void remove_projectile(int8_t projectileIndex);
 
+static void add_asteroid(void);
+
 // Redraw functions
 static void redraw_whole_display(void);
 static void redraw_base(uint8_t colour);
@@ -109,31 +111,38 @@ static void redraw_projectile(uint8_t projectileNumber, uint8_t colour);
 // (2) no projectiles initially
 // (3) the maximum number of asteroids, randomly distributed.
 void initialise_game(void) {
-	uint8_t x, y, i;
-	
     basePosition = 3;
 	numProjectiles = 0;
 	numAsteroids = 0;
 
-	for(i=0; i < MAX_ASTEROIDS ; i++) {
-		// Generate random position that does not already
-		// have an asteroid.
-		do {
-			// Generate random x position - somewhere from 0
-			// to FIELD_WIDTH - 1
-			x = (uint8_t)(random() % FIELD_WIDTH);
-			// Generate random y position - somewhere from 3
-			// to FIELD_HEIGHT - 1 (i.e., not in the lowest
-			// three rows)
-			y = (uint8_t)(3 + (random() % (FIELD_HEIGHT-3)));
-		} while(asteroid_at(x,y) != -1);
-		// If we get here, we've now found an x,y location without
-		// an existing asteroid - record the position
-		asteroids[i] = GAME_POSITION(x,y);
-		numAsteroids++;
+	for(uint8_t i=0; i < MAX_ASTEROIDS ; i++) {
+		add_asteroid();
 	}
 	
 	redraw_whole_display();
+}
+
+void add_asteroid(void) {
+	if (numAsteroids == MAX_ASTEROIDS)
+		return;
+		
+	uint8_t x, y;
+	uint8_t i = numAsteroids;
+	// Generate random position that does not already
+	// have an asteroid.
+	do {
+		// Generate random x position - somewhere from 0
+		// to FIELD_WIDTH - 1
+		x = (uint8_t)(random() % FIELD_WIDTH);
+		// Generate random y position - somewhere from 3
+		// to FIELD_HEIGHT - 1 (i.e., not in the lowest
+		// three rows)
+		y = (uint8_t)(3 + (random() % (FIELD_HEIGHT-3)));
+	} while(asteroid_at(x,y) != -1);
+	// If we get here, we've now found an x,y location without
+	// an existing asteroid - record the position
+	asteroids[i] = GAME_POSITION(x,y);
+	numAsteroids++;
 }
 
 // Attempt to move the base station to the left or right. 
@@ -151,13 +160,20 @@ int8_t move_base(int8_t direction) {
 	// basePosition 256 times will eventually bring it back to
 	// same value.
 	
+	// #define MOVE_LEFT 0
+	// #define MOVE_RIGHT 1
+	
 	// YOUR CODE HERE (AND BELOW) - FIX THIS FUNCTION
+	
+	if ((basePosition == 0 && direction == MOVE_LEFT) 
+		|| (basePosition == 7 && direction == MOVE_RIGHT))
+		return 0;
 	
 	// We erase the base from its current position first
 	redraw_base(COLOUR_BLACK);
 	
 	// Move the base (only to the left at present)
-	basePosition--;
+	basePosition += 2*direction - 1;
 	
 	// Redraw the base
 	redraw_base(COLOUR_BASE);
@@ -190,6 +206,8 @@ int8_t fire_projectile(void) {
 void advance_projectiles(void) {
 	uint8_t x, y;
 	int8_t projectileNumber;
+	
+	int8_t asteroidHit;
 
 	projectileNumber = 0;
 	while(projectileNumber < numProjectiles) {
@@ -214,28 +232,35 @@ void advance_projectiles(void) {
 			// dealt with (if we weren't at the last one in the list).
 			// remove_projectile() will also result in numProjectiles being
 			// decreased by 1
-		} else {
-			// Projectile is not going off the top of the display
-			// CHECK HERE IF THE NEW PROJECTILE LOCATION CORRESPONDS TO
-			// AN ASTEROID LOCATION. IF IT DOES, REMOVE THE PROJECTILE
-			// AND THE ASTEROID.
+			continue;
+		}
+		
+		asteroidHit = asteroid_at(x, y);
+		if (asteroidHit != -1) {
+			remove_projectile(projectileNumber);	
+			remove_asteroid(asteroidHit);
+			continue;
+		}
+		// Projectile is not going off the top of the display
+		// CHECK HERE IF THE NEW PROJECTILE LOCATION CORRESPONDS TO
+		// AN ASTEROID LOCATION. IF IT DOES, REMOVE THE PROJECTILE
+		// AND THE ASTEROID.
 			
-			// OTHERWISE...
+		// OTHERWISE...
 			
-			// Remove the projectile from the display 
-			redraw_projectile(projectileNumber, COLOUR_BLACK);
+		// Remove the projectile from the display 
+		redraw_projectile(projectileNumber, COLOUR_BLACK);
 			
-			// Update the projectile's position
-			projectiles[projectileNumber] = GAME_POSITION(x,y);
+		// Update the projectile's position
+		projectiles[projectileNumber] = GAME_POSITION(x,y);
 			
-			// Redraw the projectile
-			redraw_projectile(projectileNumber, COLOUR_PROJECTILE);
+		// Redraw the projectile
+		redraw_projectile(projectileNumber, COLOUR_PROJECTILE);
 			
-			// Move on to the next projectile (we don't do this if a projectile
-			// is removed since projectiles will be shuffled in the list and the
-			// next projectile (if any) will take on the same projectile number)
-			projectileNumber++;
-		}			
+		// Move on to the next projectile (we don't do this if a projectile
+		// is removed since projectiles will be shuffled in the list and the
+		// next projectile (if any) will take on the same projectile number)
+		projectileNumber++;
 	}
 }
 
@@ -299,6 +324,10 @@ static void remove_asteroid(int8_t asteroidNumber) {
 	}
 	// Last position in asteroids array is no longer used
 	numAsteroids--;
+	
+	// Draw a new asteroid.
+	add_asteroid();
+	redraw_asteroid(numAsteroids-1, COLOUR_ASTEROID);
 }
 
 // Remove projectile with the given projectile number (from 0 to

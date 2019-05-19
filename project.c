@@ -80,7 +80,7 @@ void splash_screen(void) {
 		// Scroll the message until it has scrolled off the 
 		// display or a button is pushed
 		while(scroll_display()) {
-			_delay_ms(70);
+			_delay_ms(100);
 			if(button_pushed() != NO_BUTTON_PUSHED) {
 				return;
 			}

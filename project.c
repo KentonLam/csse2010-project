@@ -91,6 +91,11 @@ void splash_screen(void) {
 	}
 }
 
+void clear_all_input_buffers() {
+	clear_serial_input_buffer(); // empty serial buffer
+	while (button_pushed() != NO_BUTTON_PUSHED) {} // empty button butter
+}
+
 void new_game(void) {
 	// Initialise the game and display
 	initialise_game();
@@ -181,6 +186,7 @@ void play_game(void) {
 				last_asteroid_move += current_time-pause_time;
 				last_proj_move += current_time-pause_time;
 				clear_to_end_of_line();
+				clear_all_input_buffers();
 			}
 		}
 		if (is_paused()) {
@@ -216,8 +222,8 @@ void play_game(void) {
 		}
 		
 		
-		asteroidTick = 2000 - 40*get_score();
-		if (asteroidTick < 180) {
+		asteroidTick = 3000 - 30*get_score();
+		if (get_score() > 1000 || asteroidTick < 180) {
 			asteroidTick = 180;
 		}
 		if(serial_input=='x' || (!is_paused() && current_time >= last_asteroid_move + asteroidTick) ) {
@@ -233,15 +239,14 @@ void handle_game_over() {
 	move_cursor(10,14);
 	printf_P(PSTR("GAME OVER"));
 	move_cursor(10,15);
-	printf_P(PSTR("Press any key to start again"));
-	move_cursor(10,16);
-	printf_P(PSTR("(please wait)"));
+	printf_P(PSTR("Please wait..."));
+
 	_delay_ms(2000);
 	
-	move_cursor(10,16);
+	move_cursor(10,15);
 	clear_to_end_of_line();
-	clear_serial_input_buffer(); // empty serial buffer
-	while (button_pushed() != NO_BUTTON_PUSHED) {} // empty button butter
+	printf_P(PSTR("Press any key to start again"));
+	clear_all_input_buffers();
 	while(button_pushed() == NO_BUTTON_PUSHED && !serial_input_available()) {
 		; // wait
 	}

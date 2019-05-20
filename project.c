@@ -84,7 +84,7 @@ void splash_screen(void) {
 		// display or a button is pushed
 		while(scroll_display()) {
 			_delay_ms(100);
-			if(button_pushed() != NO_BUTTON_PUSHED) {
+			if(button_pushed() != NO_BUTTON_PUSHED || serial_input_available()) {
 				return;
 			}
 		}
@@ -233,8 +233,16 @@ void handle_game_over() {
 	move_cursor(10,14);
 	printf_P(PSTR("GAME OVER"));
 	move_cursor(10,15);
-	printf_P(PSTR("Press a button to start again"));
-	while(button_pushed() == NO_BUTTON_PUSHED) {
+	printf_P(PSTR("Press any key to start again"));
+	move_cursor(10,16);
+	printf_P(PSTR("(please wait)"));
+	_delay_ms(2000);
+	
+	move_cursor(10,16);
+	clear_to_end_of_line();
+	clear_serial_input_buffer(); // empty serial buffer
+	while (button_pushed() != NO_BUTTON_PUSHED) {} // empty button butter
+	while(button_pushed() == NO_BUTTON_PUSHED && !serial_input_available()) {
 		; // wait
 	}
 	

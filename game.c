@@ -341,12 +341,12 @@ static void check_all_base_hits() {
 void advance_asteroids() {
 	int8_t x, y, new_y;
 	uint8_t i = 0;
-	
-	for (uint8_t j = 0; j < numAsteroids; j++) {
-		redraw_asteroid(j, COLOUR_BLACK);
-	}
+	uint8_t j = 0;
+	static uint8_t old_positions[MAX_ASTEROIDS];
 	
 	while (i < numAsteroids) {
+		old_positions[j] = INVALID_POSITION;
+		j++;
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
 		
@@ -358,11 +358,19 @@ void advance_asteroids() {
 		if (check_asteroid_hit(projectile_at(x, new_y), i))
 			continue;
 		
+		old_positions[j-1] = asteroids[i];
 		asteroids[i] = GAME_POSITION(x, new_y);
+		redraw_asteroid(i, COLOUR_ASTEROID);
 		i++;
 	}
 	check_all_base_hits();
+	
+	for (j = 0; j < MAX_ASTEROIDS; j++) {
+		if (old_positions[j] != INVALID_POSITION)
+			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(old_positions[j]), COLOUR_BLACK);
+	}
 	redraw_all_asteroids();
+	
 	add_missing_asteroids();	
 	redraw_base(COLOUR_BASE);
 	

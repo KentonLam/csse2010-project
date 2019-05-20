@@ -28,7 +28,9 @@ void init_score(void) {
 	DDRC = 0xff;
 	PORTC = 0xff;
 	//     seven seg CC  lives LEDs
-	DDRD |= (1<<DDRD2) | 0xf0;
+	DDRD |= (1<<DDRD2);
+	DDRA |= 0xf0;
+	
 	
 	score = 0;
 	lives = MAX_LIVES;
@@ -72,14 +74,13 @@ void update_score_tick(void) {
 		PORTD = (PORTD&~(1<<PORTD2)) | (left << PORTD2);
 		if ( (lives == 0 && tick >= FLASH_ON) || (left && digit == 0) ) {
 			PORTC = 0;
-		} else {
+			} else {
 			PORTC = seven_seg[digit] | (dp << 7);
 		}
 	}
 	
 	if (lives == 0) {
-		uint8_t base = PORTD & ~(0xf << 4);
-		PORTD = base | (  (tick >= FLASH_ON ? 0 : 0xf) << 4);
+		PORTA = (PORTA & 0x0f) | (tick >= FLASH_ON ? 0 : 0xf0);
 	}
 	
 	left ^= 1;
@@ -121,8 +122,7 @@ void print_lives() {
 		leds = 0;
 		break;	
 	}
-	uint8_t base = PORTD & ~(0xf << 4);
-	PORTD = base | (leds << 4);	
+	PORTA = (PORTA & 0x0f) | (leds << 4);	
 }
 
 int32_t get_lives() {

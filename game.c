@@ -17,6 +17,9 @@
 #include <assert.h>
 
 #include "buttons.h"
+#include "terminalio.h"
+
+#include "sort.h"
 
 ///////////////////////////////////////////////////////////
 // Colours
@@ -120,8 +123,16 @@ static void redraw_all_projectiles(void);
 static void redraw_projectile(uint8_t projectileNumber, uint8_t colour);
 ///////////////////////////////////////////////////////////
 
- 
 uint8_t paused = 0;
+
+void _debug_asteroids() {
+	move_cursor(2, 10);
+	printf_P(PSTR("DEBUG ASTEROIDS\n"));
+	for (uint8_t i = 0; i < MAX_ASTEROIDS; i++) {
+		printf("%d [%d] = (%d, %d)\n", i<numAsteroids, i, GET_X_POSITION(asteroids[i]), GET_Y_POSITION(asteroids[i]));
+		
+	}
+}
  
 // Initialise game field:
 // (1) base starts in the centre (x=3)
@@ -137,19 +148,12 @@ void initialise_game(void) {
 		add_asteroid();
 	}
 	
+	asteroid_sort(asteroids, numAsteroids);
+	/*_debug_asteroids();*/
+	
+	
 	redraw_whole_display();
 }
-
-#ifdef _ASTEROID_DEBUG
-void _debug_asteroids() {
-	move_cursor(2, 10);
-	printf_P(PSTR("DEBUG ASTEROIDS\n"));
-	for (uint8_t i = 0; i < MAX_ASTEROIDS; i++) {
-		printf("%d [%d] = (%d, %d)\n", i<numAsteroids, i, GET_X_POSITION(asteroids[i]), GET_Y_POSITION(asteroids[i]));
-		
-	}
-}
-#endif
 
 void add_asteroid(void) {
 	add_asteroid_in_rows(3);
@@ -399,6 +403,7 @@ uint8_t is_paused() {
 
 static void add_missing_asteroids(void) {
 	for (uint8_t i = 0; i < MAX_ASTEROIDS-numAsteroids; i++) {
+		/*printf_P(PSTR("ADDING MISSING ASTEROID"));*/
 		add_asteroid_in_rows(FIELD_HEIGHT-1);
 	}
 }
@@ -461,6 +466,8 @@ static void remove_asteroid(int8_t asteroidNumber) {
 	asteroids[numAsteroids-1] = INVALID_POSITION;
 	// Last position in asteroids array is no longer used
 	numAsteroids--;
+	
+	/*add_asteroid_in_rows(FIELD_HEIGHT-1);*/
 
 #ifdef _ASTEROID_DEBUG
 	int8_t test = asteroid_at(x, y);

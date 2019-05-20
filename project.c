@@ -221,11 +221,17 @@ void play_game(void) {
 			last_proj_move = current_time;
 		}
 		
-		
-		asteroidTick = 3000 - 30*get_score();
-		if (get_score() > 1000 || asteroidTick < 180) {
-			asteroidTick = 180;
-		}
+		if (PIND & (1<<PIND3)) {
+			asteroidTick = 2000 - 20*get_score();
+			if (get_score() > 92) {
+				asteroidTick = 150;
+			}
+		} else {
+			asteroidTick = 150 + 30000/(get_score()+20);
+		}		
+// 		if (get_score() > 1000 || asteroidTick < 180) {
+// 			asteroidTick = 180;
+// 		}
 		if(serial_input=='x' || (!is_paused() && current_time >= last_asteroid_move + asteroidTick) ) {
 			advance_asteroids();
 			last_asteroid_move = current_time;

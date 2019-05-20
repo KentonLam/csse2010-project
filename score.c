@@ -57,16 +57,23 @@ void print_score(void) {
 void update_score_tick(void) {
 	if (score != -1) {
 		uint8_t digit = 0;
+		uint8_t dp = 0;
+		uint16_t shifted_score = score;
+		while (shifted_score >= 100) {
+			shifted_score /= 10;
+		}
 		if (left) {
-			digit = (score/10)%10;
+			digit = (shifted_score/10)%10;
+			dp = score >= 1000;
 		} else {
-			digit = score % 10;
+			digit = shifted_score % 10;
+			dp = score >= 100;
 		}	
 		PORTD = (PORTD&~(1<<PORTD2)) | (left << PORTD2);
 		if ( (lives == 0 && tick >= FLASH_ON) || (left && digit == 0) ) {
 			PORTC = 0;
 		} else {
-			PORTC = seven_seg[digit];
+			PORTC = seven_seg[digit] | (dp << 7);
 		}
 	}
 	

@@ -11,15 +11,20 @@
 #include "score.h"
 #include <stdlib.h>
 /* Stdlib needed for random() - random number generator */
-
+#include <avr/pgmspace.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
+
+#include "buttons.h"
 
 ///////////////////////////////////////////////////////////
 // Colours
 #define COLOUR_ASTEROID		COLOUR_GREEN
 #define COLOUR_PROJECTILE	COLOUR_RED
 #define COLOUR_BASE			COLOUR_YELLOW
+
+#undef _ASTEROID_DEBUG
 
 ///////////////////////////////////////////////////////////
 // Game positions (x,y) where x is 0 to 7 and y is 0 to 15
@@ -95,6 +100,7 @@ static void check_all_base_hits();
 static void add_asteroid_in_rows(uint8_t min_y);
 
 static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
+static void add_missing_asteroids(void);
 
 // Remove the asteroid/projectile at the given index number. If
 // the index is not valid, then no removal is performed. This 
@@ -131,13 +137,24 @@ void initialise_game(void) {
 	redraw_whole_display();
 }
 
+#ifdef _ASTEROID_DEBUG
+void _debug_asteroids() {
+	move_cursor(2, 10);
+	printf_P(PSTR("DEBUG ASTEROIDS\n"));
+	for (uint8_t i = 0; i < MAX_ASTEROIDS; i++) {
+		printf("%d [%d] = (%d, %d)\n", i<numAsteroids, i, GET_X_POSITION(asteroids[i]), GET_Y_POSITION(asteroids[i]));
+		
+	}
+}
+#endif
+
 void add_asteroid(void) {
 	add_asteroid_in_rows(3);
 }
 
 /*  rows is how many rows the asteroid can be in,
 	starting at the top of the board. */
-void add_asteroid_in_rows(uint8_t min_y) {
+void add_asteroid_in_rows(uint8_t blockedRows) {
 	if (numAsteroids == MAX_ASTEROIDS)
 		return;
 	
@@ -154,21 +171,23 @@ void add_asteroid_in_rows(uint8_t min_y) {
 		// Generate random y position - somewhere from 3
 		// to FIELD_HEIGHT - 1 (i.e., not in the lowest
 		// three rows)
-		y = (uint8_t)(min_y + random() % (FIELD_HEIGHT-min_y));
-		
+		y = (uint8_t)(blockedRows + (random() % (FIELD_HEIGHT-blockedRows)));
 		if (asteroid_at(x, y) == -1) {
-			attempts = 0;
-			break;
+			// If we get here, we've now found an x,y location without
+			// an existing asteroid - record the position
+			asteroids[i] = GAME_POSITION(x,y);
+			numAsteroids++;
+			redraw_asteroid(i, COLOUR_ASTEROID);
+			return;
 		}
 		attempts++;
-	} while (attempts <= (FIELD_HEIGHT-min_y)*8);
+	} while (attempts <= 8*16);
 	
-	if (attempts == 0) {
-		// If we get here, we've now found an x,y location without
-		// an existing asteroid - record the position
-		asteroids[i] = GAME_POSITION(x,y);
-		numAsteroids++;
-	}
+	#ifdef _ASTEROID_DEBUG
+	_debug_asteroids();
+	printf("add_asteroids_in_rows");
+	#endif
+
 }
 
 // Attempt to move the base station to the left or right. 
@@ -285,6 +304,7 @@ void advance_projectiles(void) {
 		// next projectile (if any) will take on the same projectile number)
 		projectileNumber++;
 	}
+	add_missing_asteroids();
 }
 
 int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit) {
@@ -318,6 +338,11 @@ static void check_all_base_hits() {
 void advance_asteroids() {
 	int8_t x, y, new_y;
 	uint8_t i = 0;
+	
+	for (uint8_t j = 0; j < numAsteroids; j++) {
+		redraw_asteroid(j, COLOUR_BLACK);
+	}
+	
 	while (i < numAsteroids) {
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
@@ -329,25 +354,36 @@ void advance_asteroids() {
 		}
 		if (check_asteroid_hit(projectile_at(x, new_y), i))
 			continue;
-			
 		
-		redraw_asteroid(i, COLOUR_BLACK);
 		asteroids[i] = GAME_POSITION(x, new_y);
-		redraw_asteroid(i, COLOUR_ASTEROID);
 		i++;
 	}
 	check_all_base_hits();
+	redraw_all_asteroids();
+	add_missing_asteroids();	
 	redraw_base(COLOUR_BASE);
+	
+	#ifdef _ASTEROID_DEBUG
+	_debug_asteroids();
+	printf("advance_asteroids");
+	#endif
 }
 
 // Returns 1 if the game is over, 0 otherwise. Initially, the game is
 // never over.
 int8_t is_game_over(void) {
+	/*return 0;*/
 	return (get_lives() == 0);
 }
 
 
 /******** INTERNAL FUNCTIONS ****************/
+
+static void add_missing_asteroids(void) {
+	for (uint8_t i = 0; i < MAX_ASTEROIDS-numAsteroids; i++) {
+		add_asteroid_in_rows(FIELD_HEIGHT-1);
+	}
+}
 
 // Check whether there is an asteroid at a given position.
 // Returns -1 if there is no asteroid, otherwise we return
@@ -385,25 +421,44 @@ static int8_t projectile_at(uint8_t x, uint8_t y) {
 ** numAsteroids - 1).
 */
 static void remove_asteroid(int8_t asteroidNumber) {
-	if(asteroidNumber < 0 || asteroidNumber >= numAsteroids) {
+	if (asteroidNumber < 0 || asteroidNumber >= numAsteroids) {
 		// Invalid index - do nothing
 		return;
 	}
 	
+#ifdef _ASTEROID_DEBUG
+	uint8_t x = GET_X_POSITION(asteroids[asteroidNumber]);
+	uint8_t y = GET_Y_POSITION(asteroids[asteroidNumber]);
+#endif
+	
 	// Remove the asteroid from the display
 	redraw_asteroid(asteroidNumber, COLOUR_BLACK);
+	
 	
 	if(asteroidNumber < numAsteroids - 1) {
 		// Asteroid is not the last one in the list
 		// - move the last one in the list to this position
 		asteroids[asteroidNumber] = asteroids[numAsteroids - 1];
 	}
+	asteroids[numAsteroids-1] = INVALID_POSITION;
 	// Last position in asteroids array is no longer used
 	numAsteroids--;
+
+#ifdef _ASTEROID_DEBUG
+	int8_t test = asteroid_at(x, y);
+	if (test != -1) {
+		printf("ASTEROID FAULT %d at (%d,%d)", test, x, y);
+		_debug_asteroids();
+		printf("fault ");
+		while (button_pushed() == NO_BUTTON_PUSHED) {}
+	}
 	
 	// Draw a new asteroid.
-	add_asteroid_in_rows(FIELD_HEIGHT-1);
-	redraw_asteroid(numAsteroids-1, COLOUR_ASTEROID);
+	// add_asteroid_in_rows(FIELD_HEIGHT-1);
+	
+	_debug_asteroids();
+	printf("remove_asteroids");
+#endif
 }
 
 // Remove projectile with the given projectile number (from 0 to

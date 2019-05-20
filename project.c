@@ -23,6 +23,9 @@
 #define F_CPU 8000000L
 #include <util/delay.h>
 
+#include <assert.h>
+
+
 // Function prototypes - these are defined below (after main()) in the order
 // given here
 void initialise_hardware(void);
@@ -110,7 +113,7 @@ void play_game(void) {
 	char serial_input, escape_sequence_char;
 	uint8_t characters_into_escape_sequence = 0;
 	
-	uint16_t asteroidTick = 0;
+	int16_t asteroidTick = 0;
 	
 	// Get the current time and remember this as the last time the projectiles
     // were moved.
@@ -195,9 +198,10 @@ void play_game(void) {
 		}
 		
 		
-		asteroidTick = 2000 - 20*get_score();
-		if (asteroidTick < 500);
-			asteroidTick = 500;
+		asteroidTick = 2000 - 40*get_score();
+		if (asteroidTick < 250) {
+			asteroidTick = 250;
+		}
 		if(serial_input=='x' || (!is_game_over() && current_time >= last_asteroid_move + asteroidTick) ) {
 			advance_asteroids();
 			last_asteroid_move = current_time;

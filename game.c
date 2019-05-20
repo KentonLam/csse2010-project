@@ -346,10 +346,9 @@ void advance_asteroids() {
 	int8_t x, y, new_y;
 	uint8_t i = 0;
 	uint8_t j = 0;
-	static uint8_t old_positions[MAX_ASTEROIDS];
+	uint8_t asteroid_states[FIELD_HEIGHT] = { 0 };
 	
 	while (i < numAsteroids) {
-		old_positions[j] = INVALID_POSITION;
 		j++;
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
@@ -362,18 +361,26 @@ void advance_asteroids() {
 		if (check_asteroid_hit(projectile_at(x, new_y), i))
 			continue;
 		
-		old_positions[j-1] = asteroids[i];
 		asteroids[i] = GAME_POSITION(x, new_y);
 		redraw_asteroid(i, COLOUR_ASTEROID);
+		asteroid_states[new_y] |= 1<<x;
 		i++;
+	}
+	
+	
+	for (j = 0; j < MAX_ASTEROIDS; j++) {
+		if (asteroids[j] == INVALID_POSITION) {
+			continue;
+		}
+		x = GET_X_POSITION(asteroids[j]);
+		y = GET_Y_POSITION(asteroids[j]);
+		if (y < FIELD_HEIGHT-1 && !(asteroid_states[y+1] & (1<<x))) {
+			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, y+1), COLOUR_BLACK);
+		}
 	}
 	check_all_base_hits();
 	
-	for (j = 0; j < MAX_ASTEROIDS; j++) {
-		if (old_positions[j] != INVALID_POSITION)
-			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(old_positions[j]), COLOUR_BLACK);
-	}
-	redraw_all_asteroids();
+	/*redraw_all_asteroids();*/
 	
 	add_missing_asteroids();	
 	redraw_base(COLOUR_BASE);

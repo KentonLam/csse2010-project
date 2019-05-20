@@ -79,7 +79,7 @@ void splash_screen(void) {
 	// and wait for a push button to be pushed.
 	ledmatrix_clear();
 	while(1) {
-		set_scrolling_display_text("45294583", COLOUR_GREEN);
+		set_scrolling_display_text("45294583", COLOUR_ORANGE);
 		// Scroll the message until it has scrolled off the 
 		// display or a button is pushed
 		while(scroll_display()) {

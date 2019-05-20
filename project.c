@@ -222,10 +222,7 @@ void play_game(void) {
 		}
 		
 		if (PIND & (1<<PIND3)) {
-			asteroidTick = 2000 - 20*get_score();
-			if (get_score() > 92) {
-				asteroidTick = 150;
-			}
+			asteroidTick = 120 + 3000/(get_score()+4);
 		} else {
 			asteroidTick = 150 + 30000/(get_score()+20);
 		}		
@@ -233,7 +230,9 @@ void play_game(void) {
 // 			asteroidTick = 180;
 // 		}
 		if(serial_input=='x' || (!is_paused() && current_time >= last_asteroid_move + asteroidTick) ) {
+			/*uint32_t c = get_current_time();*/
 			advance_asteroids();
+			/*printf("Render: %d     ", get_current_time() - c);*/
 			last_asteroid_move = current_time;
 		}
 		

@@ -12,6 +12,9 @@
 #include <stdlib.h>
 /* Stdlib needed for random() - random number generator */
 
+#include <stdio.h>
+#include <stdbool.h>
+
 ///////////////////////////////////////////////////////////
 // Colours
 #define COLOUR_ASTEROID		COLOUR_GREEN
@@ -87,6 +90,7 @@ uint8_t		asteroids[MAX_ASTEROIDS];
 
 static int8_t asteroid_at(uint8_t x, uint8_t y);
 static int8_t projectile_at(uint8_t x, uint8_t y);
+static void check_all_base_hits();
 
 static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
 
@@ -177,6 +181,7 @@ int8_t move_base(int8_t direction) {
 	
 	// Move the base (only to the left at present)
 	basePosition += 2*direction - 1;
+	check_all_base_hits();
 	
 	// Redraw the base
 	redraw_base(COLOUR_BASE);
@@ -272,6 +277,25 @@ int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit) {
 	return 1;
 }
 
+static uint8_t check_base_hit(int8_t x, int8_t y) {
+	int8_t asteroid = asteroid_at(x, y);
+	if (asteroid == -1)
+		return 0;
+	remove_asteroid(asteroid);
+	
+	add_to_score(10);
+	return 1;
+}
+
+/* Returns 1 if the base has a part at the given (x,y) position.
+Returns 0 otherwise. Handles destroying the asteroid. */
+static void check_all_base_hits() {
+	check_base_hit(basePosition, 1);
+	check_base_hit(basePosition-1, 0);
+	check_base_hit(basePosition, 0);
+	check_base_hit(basePosition+1, 0);
+}
+
 void advance_asteroids() {
 	int8_t x, y, new_y;
 	uint8_t i = 0;
@@ -286,12 +310,14 @@ void advance_asteroids() {
 		}
 		if (check_asteroid_hit(projectile_at(x, new_y), i))
 			continue;
+			
 		
 		redraw_asteroid(i, COLOUR_BLACK);
 		asteroids[i] = GAME_POSITION(x, new_y);
 		redraw_asteroid(i, COLOUR_ASTEROID);
 		i++;
 	}
+	check_all_base_hits();
 	redraw_base(COLOUR_BASE);
 }
 

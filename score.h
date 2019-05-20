@@ -10,8 +10,8 @@
 #include <stdint.h>
 
 void init_score(void);
-void add_to_score(uint16_t value);
-uint32_t get_score(void);
+void add_to_score(int16_t value);
+int32_t get_score(void);
 
 void update_score_ssd(void);
 

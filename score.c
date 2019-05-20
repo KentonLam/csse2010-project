@@ -11,7 +11,7 @@
 
 uint8_t seven_seg[10] = { 63,6,91,79,102,109,125,7,127,111};
 	
-uint32_t score = -1;
+int32_t score = -1;
 uint8_t left = 0;
 
 static void print_score();
@@ -26,17 +26,21 @@ void init_score(void) {
 	print_score();
 }
 
-void add_to_score(uint16_t value) {
-	score += value;
+void add_to_score(int16_t value) {
+	if (score - value < 0) {
+		score = 0;
+	} else {
+		score += value;
+	}
 	print_score();
 }
 
-uint32_t get_score(void) {
+int32_t get_score(void) {
 	return score;
 }
 
 void print_score(void) {
-	move_cursor(0, 0);
+	move_cursor(1, 1);
 	printf("Score: %3lu", score);
 }
 

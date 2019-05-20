@@ -80,5 +80,5 @@ ISR(TIMER0_COMPA_vect) {
 	clockTicks++;
 	
 	if (clockTicks % 10 == 0)
-		update_score_ssd();
+		update_score_tick();
 }

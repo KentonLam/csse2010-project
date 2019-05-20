@@ -110,6 +110,8 @@ void play_game(void) {
 	char serial_input, escape_sequence_char;
 	uint8_t characters_into_escape_sequence = 0;
 	
+	uint16_t asteroidTick = 0;
+	
 	// Get the current time and remember this as the last time the projectiles
     // were moved.
 	current_time = get_current_time();
@@ -184,14 +186,19 @@ void play_game(void) {
 		// do nothing
 		
 		current_time = get_current_time();
-		if(!is_game_over() && current_time >= last_proj_move + 200) {
+		if(!is_game_over() && current_time >= last_proj_move + 100) {
 			// 500ms (0.5 second) has passed since the last time we moved
 			// the projectiles - move them - and keep track of the time we 
 			// moved them
 			advance_projectiles();
 			last_proj_move = current_time;
 		}
-		if(!is_game_over() && current_time >= last_asteroid_move + 2001) {
+		
+		
+		asteroidTick = 2000 - 20*get_score();
+		if (asteroidTick < 500);
+			asteroidTick = 500;
+		if(serial_input=='x' || (!is_game_over() && current_time >= last_asteroid_move + asteroidTick) ) {
 			advance_asteroids();
 			last_asteroid_move = current_time;
 		}

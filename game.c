@@ -92,6 +92,8 @@ static int8_t asteroid_at(uint8_t x, uint8_t y);
 static int8_t projectile_at(uint8_t x, uint8_t y);
 static void check_all_base_hits();
 
+static void add_asteroid_in_rows(uint8_t min_y);
+
 static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
 
 // Remove the asteroid/projectile at the given index number. If
@@ -130,11 +132,19 @@ void initialise_game(void) {
 }
 
 void add_asteroid(void) {
+	add_asteroid_in_rows(3);
+}
+
+/*  rows is how many rows the asteroid can be in,
+	starting at the top of the board. */
+void add_asteroid_in_rows(uint8_t min_y) {
 	if (numAsteroids == MAX_ASTEROIDS)
 		return;
-		
+	
 	uint8_t x, y;
 	uint8_t i = numAsteroids;
+	
+	uint8_t attempts = 0;
 	// Generate random position that does not already
 	// have an asteroid.
 	do {
@@ -144,12 +154,21 @@ void add_asteroid(void) {
 		// Generate random y position - somewhere from 3
 		// to FIELD_HEIGHT - 1 (i.e., not in the lowest
 		// three rows)
-		y = (uint8_t)(3 + (random() % (FIELD_HEIGHT-3)));
-	} while(asteroid_at(x,y) != -1);
-	// If we get here, we've now found an x,y location without
-	// an existing asteroid - record the position
-	asteroids[i] = GAME_POSITION(x,y);
-	numAsteroids++;
+		y = (uint8_t)(min_y + random() % (FIELD_HEIGHT-min_y));
+		
+		if (asteroid_at(x, y) == -1) {
+			attempts = 0;
+			break;
+		}
+		attempts++;
+	} while (attempts <= (FIELD_HEIGHT-min_y)*8);
+	
+	if (attempts == 0) {
+		// If we get here, we've now found an x,y location without
+		// an existing asteroid - record the position
+		asteroids[i] = GAME_POSITION(x,y);
+		numAsteroids++;
+	}
 }
 
 // Attempt to move the base station to the left or right. 
@@ -283,7 +302,7 @@ static uint8_t check_base_hit(int8_t x, int8_t y) {
 		return 0;
 	remove_asteroid(asteroid);
 	
-	add_to_score(10);
+	change_lives(-1);
 	return 1;
 }
 
@@ -324,7 +343,7 @@ void advance_asteroids() {
 // Returns 1 if the game is over, 0 otherwise. Initially, the game is
 // never over.
 int8_t is_game_over(void) {
-	return 0;
+	return (get_lives() == 0);
 }
 
 
@@ -383,7 +402,7 @@ static void remove_asteroid(int8_t asteroidNumber) {
 	numAsteroids--;
 	
 	// Draw a new asteroid.
-	add_asteroid();
+	add_asteroid_in_rows(FIELD_HEIGHT-1);
 	redraw_asteroid(numAsteroids-1, COLOUR_ASTEROID);
 }
 

@@ -121,6 +121,8 @@ static void redraw_projectile(uint8_t projectileNumber, uint8_t colour);
 ///////////////////////////////////////////////////////////
 
  
+uint8_t paused = 0;
+ 
 // Initialise game field:
 // (1) base starts in the centre (x=3)
 // (2) no projectiles initially
@@ -129,6 +131,7 @@ void initialise_game(void) {
     basePosition = 3;
 	numProjectiles = 0;
 	numAsteroids = 0;
+	paused = 0;
 
 	for(uint8_t i=0; i < MAX_ASTEROIDS ; i++) {
 		add_asteroid();
@@ -376,7 +379,14 @@ int8_t is_game_over(void) {
 	return (get_lives() == 0);
 }
 
+void set_paused(uint8_t pause) {
+	paused = pause;
+}
 
+uint8_t is_paused() {
+	return paused;
+}
+ 
 /******** INTERNAL FUNCTIONS ****************/
 
 static void add_missing_asteroids(void) {

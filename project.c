@@ -114,6 +114,7 @@ void play_game(void) {
 	uint8_t characters_into_escape_sequence = 0;
 	
 	int16_t asteroidTick = 0;
+	uint32_t pause_time = 0;
 	
 	// Get the current time and remember this as the last time the projectiles
     // were moved.
@@ -166,7 +167,27 @@ void play_game(void) {
 		}
 		
 		// Process the input. 
-		if(button==3 || escape_sequence_char=='D' || serial_input=='L' || serial_input=='l') {
+		// Check for pause/unpause first.
+		if (serial_input == 'p' || serial_input == 'P') {
+			// Unimplemented feature - pause/unpause the game until 'p' or 'P' is
+			// pressed again
+			set_paused(is_paused() ^ 1);			
+			move_cursor(2, 3);
+			if (is_paused()) {
+				pause_time = get_current_time();
+				printf_P(PSTR("Paused."));
+			} else {
+				current_time = get_current_time();
+				last_asteroid_move += current_time-pause_time;
+				last_proj_move += current_time-pause_time;
+				clear_to_end_of_line();
+			}
+		}
+		if (is_paused()) {
+			continue;
+		}
+		
+		if (button==3 || escape_sequence_char=='D' || serial_input=='L' || serial_input=='l') {
 			// Button 3 pressed OR left cursor key escape sequence completed OR
 			// letter L (lowercase or uppercase) pressed - attempt to move left
 			move_base(MOVE_LEFT);
@@ -181,15 +202,12 @@ void play_game(void) {
 			// Button 0 pressed OR right cursor key escape sequence completed OR
 			// letter R (lowercase or uppercase) pressed - attempt to move right
 			move_base(MOVE_RIGHT);
-		} else if(serial_input == 'p' || serial_input == 'P') {
-			// Unimplemented feature - pause/unpause the game until 'p' or 'P' is
-			// pressed again
-		} 
+		} else 
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
 		
 		current_time = get_current_time();
-		if(!is_game_over() && current_time >= last_proj_move + 100) {
+		if(!is_paused() && current_time >= last_proj_move + 100) {
 			// 500ms (0.5 second) has passed since the last time we moved
 			// the projectiles - move them - and keep track of the time we 
 			// moved them
@@ -199,10 +217,10 @@ void play_game(void) {
 		
 		
 		asteroidTick = 2000 - 40*get_score();
-		if (asteroidTick < 250) {
-			asteroidTick = 250;
+		if (asteroidTick < 180) {
+			asteroidTick = 180;
 		}
-		if(serial_input=='x' || (!is_game_over() && current_time >= last_asteroid_move + asteroidTick) ) {
+		if(serial_input=='x' || (!is_paused() && current_time >= last_asteroid_move + asteroidTick) ) {
 			advance_asteroids();
 			last_asteroid_move = current_time;
 		}

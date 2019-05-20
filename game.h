@@ -52,4 +52,6 @@ void advance_asteroids(void);
 // Returns 1 if the game is over, 0 otherwise
 int8_t is_game_over(void);
 
+void set_paused(uint8_t paused);
+uint8_t is_paused();
 #endif

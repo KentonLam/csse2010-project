@@ -20,6 +20,8 @@
 #include "timer0.h"
 #include "game.h"
 
+#include "leaderboard.h"
+
 #define F_CPU 8000000L
 #include <util/delay.h>
 
@@ -62,6 +64,8 @@ void initialise_hardware(void) {
 	init_serial_stdio(19200,0);
 	
 	init_timer0();
+	
+	init_leaderboard();
 	
 	// Turn on global interrupts
 	sei();
@@ -246,10 +250,21 @@ void handle_game_over() {
 	move_cursor(10,15);
 	printf_P(PSTR("Please wait..."));
 
-	_delay_ms(2000);
+	_delay_ms(1000);
+	
+	print_leaderboard(5, 30);
 	
 	move_cursor(10,15);
 	clear_to_end_of_line();
+	
+	if (made_leaderboard(get_score())) {
+		printf_P(PSTR("New highscore!"));
+		move_cursor(10,16);
+		printf_P(PSTR("Name: "));
+		ask_name(get_score());
+		move_cursor(10,17);
+	}
+		
 	printf_P(PSTR("Press any key to start again"));
 	clear_all_input_buffers();
 	while(button_pushed() == NO_BUTTON_PUSHED && !serial_input_available()) {

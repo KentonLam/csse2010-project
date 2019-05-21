@@ -301,3 +301,7 @@ ISR(USART0_RX_vect)
 		}
 	}
 }
+
+void set_echo(uint8_t new_echo) {
+	do_echo = new_echo;
+}

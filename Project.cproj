@@ -137,6 +137,12 @@
     <Compile Include="game.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="leaderboard.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="leaderboard.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ledmatrix.c">
       <SubType>compile</SubType>
     </Compile>

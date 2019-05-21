@@ -27,7 +27,6 @@
 
 #include <assert.h>
 
-
 // Function prototypes - these are defined below (after main()) in the order
 // given here
 void initialise_hardware(void);
@@ -58,6 +57,7 @@ int main(void) {
 
 void initialise_hardware(void) {
 	ledmatrix_setup();
+	set_display_attribute(TERM_RESET);
 	init_button_interrupts();
 	// Setup serial port for 19200 baud communication with no echo
 	// of incoming characters
@@ -102,13 +102,35 @@ void clear_all_input_buffers() {
 
 void new_game(void) {
 	// Initialise the game and display
-	initialise_game();
+	
 	
 	// Clear the serial terminal
 	clear_terminal();
+	hide_cursor();
+	set_display_attribute(FG_WHITE);
+	draw_rectangle(X_LEFT, Y_TOP, X_RIGHT-X_LEFT+1, Y_BOTTOM-Y_TOP+1);
+	
+	initialise_game();
+	
+	move_cursor(X_TITLE, Y_TITLE);
+	printf_P(PSTR("ASTEROIDS"));
+	
+	
+// 	move_cursor(X_LEFT+1, Y_TOP+1);
+// 	printf("X");
+// 	move_cursor(X_RIGHT-1, Y_BOTTOM-1);
+// 	printf("X");
+// 	
+// 	draw_horizontal_line(Y_TOP, X_LEFT, X_RIGHT);
+// 	draw_horizontal_line(Y_BOTTOM, X_LEFT, X_RIGHT);
+// 	
+// 	draw_vertical_line(X_LEFT, Y_TOP, Y_BOTTOM);
+// 	draw_vertical_line(X_RIGHT, Y_TOP, Y_BOTTOM);
 	
 	// Initialise the score
-	init_score();
+	init_score(X_SCORE, Y_SCORE);
+	
+	print_leaderboard(X_LEADERBOARD, Y_TOP);
 	
 	// Clear a button push or serial input if any are waiting
 	// (The cast to void means the return value is ignored.)
@@ -184,11 +206,16 @@ void play_game(void) {
 			move_cursor(2, 3);
 			if (is_paused()) {
 				pause_time = get_current_time();
-				printf_P(PSTR("Paused."));
+				move_cursor(X_TITLE, Y_TITLE+1);
+				fast_set_display_attribute(BG_YELLOW);
+				fast_set_display_attribute(FG_BLACK);
+				printf_P(PSTR("(Paused)"));
+				fast_set_display_attribute(TERM_RESET);
 			} else {
 				current_time = get_current_time();
 				last_asteroid_move += current_time-pause_time;
 				last_proj_move += current_time-pause_time;
+				move_cursor(X_TITLE, Y_TITLE+1);
 				clear_to_end_of_line();
 				clear_all_input_buffers();
 			}
@@ -245,27 +272,34 @@ void play_game(void) {
 }
 
 void handle_game_over() {
-	move_cursor(10,14);
-	printf_P(PSTR("GAME OVER"));
-	move_cursor(10,15);
-	printf_P(PSTR("Please wait..."));
-
-	_delay_ms(1000);
-	
-	print_leaderboard(5, 30);
-	
-	move_cursor(10,15);
-	clear_to_end_of_line();
-	
-	if (made_leaderboard(get_score())) {
-		printf_P(PSTR("New highscore!"));
-		move_cursor(10,16);
-		printf_P(PSTR("Name: "));
-		ask_name(get_score());
-		move_cursor(10,17);
+	for (uint8_t y = 0; y < H_GAME_OVER+2; y++) {
+		move_cursor(X_GAME_OVER+1, Y_GAME_OVER+y);
+		clear_to_end_of_line();
 	}
-		
-	printf_P(PSTR("Press any key to start again"));
+	
+	set_display_attribute(FG_RED);
+	draw_rectangle(X_GAME_OVER, Y_GAME_OVER, W_GAME_OVER+2, H_GAME_OVER+2);
+	
+	move_cursor(X_GAME_OVER+1, Y_GAME_OVER+1);
+	printf_P(PSTR("GAME OVER"));
+	
+	_delay_ms(300);
+	
+	move_cursor(X_GAME_OVER+1, Y_GAME_OVER+2);
+	printf_P(PSTR("Score: %d. "), get_score());
+	if (made_leaderboard(get_score())) {
+		set_display_attribute(TERM_BLINK);
+		printf_P(PSTR("New highscore!"));
+		set_display_attribute(TERM_RESET);
+		move_cursor(X_GAME_OVER+1, Y_GAME_OVER+3);
+		printf_P(PSTR("Name: "));
+
+		ask_name(get_score());
+		print_leaderboard(X_LEADERBOARD, Y_TOP);
+	}
+	_delay_ms(200);
+	move_cursor(X_GAME_OVER+1,Y_GAME_OVER+4);
+	printf_P(PSTR("Press any key to start over..."));
 	clear_all_input_buffers();
 	while(button_pushed() == NO_BUTTON_PUSHED && !serial_input_available()) {
 		; // wait

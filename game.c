@@ -44,12 +44,14 @@
 #define GET_Y_POSITION(posn)	((posn) & 0x0F)
 #define INVALID_POSITION		255
 
+#define TERM_POS_FROM_GAME_POS(pos) (GET_X_POSITION(pos)*2+X_LEFT+1), (Y_BOTTOM-1-GET_Y_POSITION(pos))
+
 ///////////////////////////////////////////////////////////
 // Macros to convert game position to LED matrix position
 // Note that the row number (y value) in the game (0 to 15 from the bottom) 
 // corresponds to x values on the LED matrix (0 to 15).
 // Column numbers (x values) in the game (0 to 7 from the left) correspond
-// to LED matrix y values rom 7 to 0
+// to LED matrix y values from 7 to 0
 //
 // Note that these macros result in two expressions that are comma separated - suitable
 // as use for the first two arguments to ledmatrix_update_pixel().
@@ -105,6 +107,8 @@ static void add_asteroid_in_rows(uint8_t min_y);
 static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
 static void add_missing_asteroids(void);
 
+static void draw_on_terminal(uint8_t position, uint8_t colour, char symbol);
+
 // Remove the asteroid/projectile at the given index number. If
 // the index is not valid, then no removal is performed. This 
 // enables the functions to be used like:
@@ -122,6 +126,9 @@ static void redraw_asteroid(uint8_t asteroidNumber, uint8_t colour);
 static void redraw_all_projectiles(void);
 static void redraw_projectile(uint8_t projectileNumber, uint8_t colour);
 ///////////////////////////////////////////////////////////
+
+/*typedef enum modes { MODE_NONE, MODE_ASTEROID, MODE_PROJECTILE, MODE_BASE } TerminalMode;*/
+/*static TerminalMode currentMode = MODE_NONE;*/
 
 uint8_t paused = 0;
 
@@ -375,6 +382,7 @@ void advance_asteroids() {
 		x = GET_X_POSITION(asteroids[j]);
 		y = GET_Y_POSITION(asteroids[j]);
 		if (y < FIELD_HEIGHT-1 && !(asteroid_states[y+1] & (1<<x))) {
+			draw_on_terminal(GAME_POSITION(x, y+1), COLOUR_BLACK, ' ');
 			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, y+1), COLOUR_BLACK);
 		}
 	}
@@ -531,9 +539,11 @@ static void redraw_base(uint8_t colour){
 	for(int8_t x = basePosition - 1; x <= basePosition+1; x++) {
 		if (x >= 0 && x < FIELD_WIDTH) {
 			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, 0), colour);
+			draw_on_terminal(GAME_POSITION(x, 0), colour, '#');
 		}
 	}
 	ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(basePosition, 1), colour);
+	draw_on_terminal(GAME_POSITION(basePosition, 1), colour, '#');
 }
 
 static void redraw_all_asteroids(void) {
@@ -548,6 +558,8 @@ static void redraw_asteroid(uint8_t asteroidNumber, uint8_t colour) {
 	if(asteroidNumber < numAsteroids) {
 		asteroidPosn = asteroids[asteroidNumber];
 		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(asteroidPosn), colour);
+		
+		draw_on_terminal(asteroidPosn, colour, '@');
 	}
 }
 
@@ -565,6 +577,32 @@ static void redraw_projectile(uint8_t projectileNumber, uint8_t colour) {
 	if(projectileNumber < numProjectiles) {
 		projectilePosn = projectiles[projectileNumber];
 		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(projectilePosn), colour);
+		
+		draw_on_terminal(projectilePosn, colour, 'o');
 	}
 }
 
+static void draw_on_terminal(uint8_t position, uint8_t colour, char symbol) {
+	/*return;*/
+	move_cursor(TERM_POS_FROM_GAME_POS(position));
+	if (colour == COLOUR_BLACK) {
+		printf_P(PSTR("  "));
+	} else {
+		DisplayParameter mode;
+		switch (colour) {
+			case COLOUR_ASTEROID:
+			mode = FG_GREEN;
+			break;
+			case COLOUR_PROJECTILE:
+			mode = FG_RED;
+			break;
+			case COLOUR_BASE:
+			default:
+			mode = FG_YELLOW;
+			break;
+		}
+		fast_set_display_attribute(mode);
+		printf("%c", symbol);
+		printf("%c", symbol);
+	}
+}

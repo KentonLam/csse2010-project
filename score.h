@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-void init_score(void);
+void init_score(uint8_t x, uint8_t y);
 void add_to_score(int16_t value);
 int32_t get_score(void);
 

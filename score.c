@@ -8,6 +8,7 @@
 #include "terminalio.h"
 #include <avr/io.h>
 #include <stdio.h>
+#include <avr/pgmspace.h>
 
 #define MAX_LIVES 4 
 #define FLASH_PERIOD 100 
@@ -20,10 +21,16 @@ uint8_t left = 0;
 int32_t lives = -1;
 uint8_t tick = 0;
 
+uint8_t score_x;
+uint8_t score_y;
+
 static void print_score();
 static void print_lives();
 
-void init_score(void) {
+void init_score(uint8_t x, uint8_t y) {
+	score_x = x;
+	score_y = y;
+	
 	// initialise pinouts for ssd.
 	DDRC = 0xff;
 	PORTC = 0xff;
@@ -52,8 +59,9 @@ int32_t get_score(void) {
 }
 
 void print_score(void) {
-	move_cursor(2, 2);
-	printf("Score: %3lu", score);
+	fast_set_display_attribute(TERM_RESET);
+	move_cursor(score_x, score_y);
+	printf("Score:%6lu", score);
 }
 
 void update_score_tick(void) {
@@ -96,32 +104,46 @@ void change_lives(int8_t change) {
 }
 
 void print_lives() {
+	move_cursor(score_x, score_y+1);
+	set_display_attribute(TERM_RESET);
+	printf_P(PSTR("Lives:      "));
+	
 	/* LEDS
 	2 3 4 5 
 	G O R G
 	*/
 	uint8_t leds = 0;
+	/*set_display_attribute(TERM_BRIGHT);*/
 	switch (lives) {
 		case 4:
 		leds = 0b1111;
+		fast_set_display_attribute(FG_CYAN);
+		draw_horizontal_line(score_y+1, score_x+8, score_x+11);
 		break;
 		
 		case 3:
 		leds = 0b0111;
+		fast_set_display_attribute(FG_GREEN);
+		draw_horizontal_line(score_y+1, score_x+9, score_x+11);
 		break;
 		
 		case 2:
 		leds = 0b0110;
+		fast_set_display_attribute(FG_YELLOW);
+		draw_horizontal_line(score_y+1, score_x+10, score_x+11);
 		break;
 		
 		case 1:
+		fast_set_display_attribute(FG_RED);
+		draw_horizontal_line(score_y+1, score_x+11, score_x+11);
 		leds = 0b0010;
 		break;
 		
-		case 0:
+		default:
 		leds = 0;
 		break;	
 	}
+	move_cursor(0, 0);
 	PORTA = (PORTA & 0x0f) | (leds << 4);	
 }
 

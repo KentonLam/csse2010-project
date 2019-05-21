@@ -13,7 +13,7 @@
 #include "terminalio.h"
 #include "serialio.h"
 
-#define EEPROM_SIG 0xdea1
+#define EEPROM_SIG 0xfaae
 #define SIG_ADDRESS (uint16_t *)20
 #define SCORES_START (uint16_t *)40
 #define NAMES_START (void *)60
@@ -22,8 +22,6 @@
 
 #define ESCAPE_CHAR 27
 #define MISSING 0xefff
-
-
 
 typedef struct afdjskl {
 	uint16_t score;
@@ -53,10 +51,15 @@ static void reset_eeprom(void) {
 
 void print_leaderboard(uint8_t x, uint8_t y) {
 	move_cursor(x, y);
-	printf_P(PSTR("HIGH SCORES (%d)"), numScores);
-	for (uint8_t n = 0; n < MAX_LEADERBOARD; n++) {
-		move_cursor(x, y+n+1);
-		printf("name: %s, score: %u", highscores[n].name, highscores[n].score);
+	printf_P(PSTR("LEADERBOARD"));
+	for (uint8_t i = 0; i < numScores; i++) {
+		move_cursor(x, y+i+1);
+		printf("%d. %-12s %4u", i+1, 
+			highscores[numScores-i-1].name, highscores[numScores-i-1].score);
+	}
+	for (uint8_t n = 0; n < MAX_LEADERBOARD-numScores; n++) {
+		move_cursor(x, y+n+1+numScores);
+		printf_P(PSTR("%d. (empty)"), n+numScores+1);
 	}
 }
 
@@ -71,7 +74,7 @@ void init_leaderboard(void) {
 		if (highscores[i].score != MISSING) {
 			numScores++;
 		}
-		eeprom_read_block(highscores[i].name, (void*)(NAMES_START+12*i), 12);
+		eeprom_read_block(highscores[i].name, (void*)(NAMES_START+NAME_LEN*i), NAME_LEN);
 	}
 }
 
@@ -110,14 +113,16 @@ void ask_name(uint16_t score) {
 	char escape_sequence_char = -1;
 	uint8_t characters_into_escape_sequence = 0;
 	
+	show_cursor();
 	clear_serial_input_buffer();
+	printf_P(PSTR("____________\b\b\b\b\b\b\b\b\b\b\b\b"));
 #ifndef _LOOP_FOR_NAME
-	while (c_num < NAME_LEN) {
+	while (1) {
 		escape_sequence_char = -1;
 		if(serial_input_available()) {
 			// Serial data was available - read the data from standard input
 			serial_input = fgetc(stdin);
-			/*printf("%u,", serial_input);*/
+			/*printf("%d,", serial_input);*/
 			// Check if the character is part of an escape sequence
 			if(characters_into_escape_sequence == 0 && serial_input == ESCAPE_CHAR) {
 				// We've hit the first character in an escape sequence (escape)
@@ -139,7 +144,23 @@ void ask_name(uint16_t score) {
 				// the data in the serial_input variable.
 				characters_into_escape_sequence = 0;
 			}
-				
+			
+			if (serial_input == 0x7f || serial_input == 0x8) { // backspace
+				if (c_num > 0) {
+					
+					c_num--;
+					name[c_num] = '\0';
+					printf_P(PSTR("\b_\b"));
+				}
+				continue;
+			}
+			if (serial_input == '\n') { // enter was pressed
+				break;
+			}
+			
+			if (c_num >= NAME_LEN) {
+				continue;
+			}
 			
 			if (('a' <= serial_input && serial_input <= 'z')
 				|| ('A' <= serial_input && serial_input <= 'Z')
@@ -148,16 +169,7 @@ void ask_name(uint16_t score) {
 				name[c_num++] = serial_input;
 				continue;
 			}
-			if (serial_input == 0x7f || serial_input == 0x8) { // backspace
-				if (c_num > 0) {
-					c_num--;
-					printf_P(PSTR("\b \b"));
-				}			
-				continue;				
-			}
-			if (serial_input == '\n') { // enter was pressed
-				break;
-			}
+			
 		}
 	}
 #endif
@@ -169,7 +181,7 @@ void ask_name(uint16_t score) {
 	if (numScores < MAX_LEADERBOARD) {
 		numScores++;
 	}
+	hide_cursor();
 	sort_leaderboard();
-	print_leaderboard(1, 1);
 	write_leaderboard();
 }

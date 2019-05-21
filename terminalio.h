@@ -10,6 +10,25 @@
 #ifndef TERMINAL_IO_H_
 #define TERMINAL_IO_H_
 
+// bounds of game area border
+#define X_LEFT 2
+#define Y_TOP 4
+#define X_RIGHT 19
+#define Y_BOTTOM 21
+
+#define X_LEADERBOARD (X_RIGHT+2)
+#define X_SCORE (X_LEFT+3)
+#define Y_SCORE (Y_BOTTOM+1)
+
+#define X_TITLE 6
+#define Y_TITLE (Y_TOP-2)
+
+#define Y_GAME_OVER (Y_TOP+6)
+#define X_GAME_OVER (X_LEFT+4)
+
+#define W_GAME_OVER 30
+#define H_GAME_OVER 4
+
 #include <stdint.h>
 /*
  * x (column number) and y (row number) are measured relative to the top
@@ -86,4 +105,6 @@ void scroll_up(void);
 void draw_horizontal_line(int8_t y, int8_t startx, int8_t endx);
 void draw_vertical_line(int8_t x, int8_t starty, int8_t endy);
 
+void draw_rectangle(uint8_t start_x, uint8_t start_y, uint8_t width, uint8_t height);
+void fast_set_display_attribute(DisplayParameter mode);
 #endif /* TERMINAL_IO_H */

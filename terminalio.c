@@ -11,6 +11,8 @@
 
 #include "terminalio.h"
 
+DisplayParameter currentMode = TERM_RESET;
+
 void move_cursor(int x, int y) {
     printf_P(PSTR("\x1b[%d;%dH"), y, x);
 }
@@ -32,6 +34,7 @@ void clear_to_end_of_line(void) {
 }
 
 void set_display_attribute(DisplayParameter parameter) {
+	currentMode = parameter;
 	printf_P(PSTR("\x1b[%dm"), parameter);
 }
 
@@ -83,4 +86,40 @@ void draw_vertical_line(int8_t x, int8_t start_y, int8_t end_y) {
 	}
 	printf(" ");
 	normal_display_mode();
+}
+
+void draw_rectangle(uint8_t start_x, uint8_t start_y, 
+	uint8_t width, uint8_t height) {
+	int8_t i;
+	reverse_video();
+	move_cursor(start_x, start_y);
+	for (i=0; i < width; i++) {
+		printf(" "); // top line
+	}
+	printf("\b");
+	for (i=0; i < height-1; i++) {
+		printf(" ");
+		/* Move down one and back to the left one */
+		printf_P(PSTR("\x1b[B\x1b[D"));
+	}
+	printf(" ");
+	move_cursor(start_x, start_y);
+	for (i=0; i < height-1; i++) {
+		printf(" ");
+		/* Move down one and back to the left one */
+		printf_P(PSTR("\x1b[B\x1b[D"));
+	}
+	printf(" ");
+	printf("\b");
+	for (i=0; i < width; i++) {
+		printf(" "); // top line
+	}
+	normal_display_mode();		
+}
+
+void fast_set_display_attribute(DisplayParameter mode) {
+	if (mode != currentMode) {
+		set_display_attribute(mode);
+		currentMode = mode;
+	}
 }

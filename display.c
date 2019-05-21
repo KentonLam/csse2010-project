@@ -86,17 +86,17 @@ uint8_t hob (uint8_t num)
 }
 
 void print_buffer() {
-	printf("%s", termBuffer);
+	/*printf("%s", termBuffer);*/
 	termIndex = 0;
 	memset(termBuffer, 0, sizeof(termBuffer));
 }
 
 void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
-	if (termIndex > 200) {
+	if (termIndex > 100) {
 		print_buffer();
 	}
 	
-	sprintf_P(termBuffer+termIndex, ("\x1b[%d;%dH"), y, x);
+	sprintf_P(termBuffer+termIndex, PSTR("\x1b[%d;%dH"), y, 2*x);
 	termIndex += 6 + (y>=10) + (x>=10);
 	if (colour == COLOUR_BLACK) {
 		sprintf(termBuffer+termIndex, "  ");

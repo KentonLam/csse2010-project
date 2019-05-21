@@ -353,13 +353,10 @@ static uint8_t check_base_hit(int8_t x, int8_t y) {
 /* Returns 1 if the base has a part at the given (x,y) position.
 Returns 0 otherwise. Handles destroying the asteroid. */
 static void check_all_base_hits() {
-	new_frame();
 	check_base_hit(basePosition, 1);
 	check_base_hit(basePosition-1, 0);
 	check_base_hit(basePosition, 0);
 	check_base_hit(basePosition+1, 0);
-	draw_frame();
-	new_frame();
 }
 
 void advance_asteroids() {

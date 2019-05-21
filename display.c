@@ -9,14 +9,22 @@
 #include <string.h>
 #include <stdio.h>
 #include <avr/pgmspace.h>
+#include "terminalio.h"
 #include "pixel_colour.h"
 #include "display.h"
 #include "ledmatrix.h"
+#include "pixel_colour.h"
 
 #define LED_MATRIX_POSN_FROM_XY(gameX, gameY)		(gameY) , (7-(gameX))
+#define TERM_POS_FROM_GAME_POS(pos) (GET_X_POSITION(pos)*2+X_LEFT+1), (Y_BOTTOM-1-GET_Y_POSITION(pos))
+
+#define TERM_POS_FROM_GAME_XY(x, y) (x*2+X_LEFT+1), (Y_BOTTOM-1-y)
 
 uint32_t curState[16];
 uint32_t newState[16];
+
+char termBuffer[255];
+uint8_t termIndex;
 
 char terminalBuffer[255];
 
@@ -77,7 +85,44 @@ uint8_t hob (uint8_t num)
 	return ret;
 }
 
+void print_buffer() {
+	printf("%s", termBuffer);
+	termIndex = 0;
+	memset(termBuffer, 0, sizeof(termBuffer));
+}
+
 void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
+	if (termIndex > 200) {
+		print_buffer();
+	}
+	
+	sprintf_P(termBuffer+termIndex, ("\x1b[%d;%dH"), y, x);
+	termIndex += 6 + (y>=10) + (x>=10);
+	if (colour == COLOUR_BLACK) {
+		sprintf(termBuffer+termIndex, "  ");
+	} else {
+		DisplayParameter mode;
+		char* c;
+		switch (colour) {
+			case COLOUR_GREEN:
+			mode = FG_GREEN;
+			c = "@@";
+			break;
+			case COLOUR_RED:
+			mode = FG_RED;
+			c = "/\\";
+			break;
+			case COLOUR_YELLOW:
+			default:
+			c = "##";
+			mode = FG_YELLOW;
+			break;
+		}
+		sprintf_P(termBuffer+termIndex, PSTR("\x1b[%dm%s"), mode, c);
+		termIndex += 6 + (mode>=10);
+// 		fast_set_display_attribute(mode);
+// 		printf("%s", c);
+	} 
 	ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, y), colour);
 }
 
@@ -127,6 +172,7 @@ void draw_frame() {
 			draw_pixel(x, y, val);
 		}
 	}
+	print_buffer();
 	memset(newState, 0, sizeof(newState));
 		
 }

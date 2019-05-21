@@ -14,6 +14,9 @@
 #define CODE_YELLOW (1<<2)
 #define CODE_GREEN (1<<1)
 
-
+void reset_frame();
+void new_frame();
+void set_pixel(uint8_t x, uint8_t y, uint8_t colour);
+void draw_frame();
 
 #endif /* DISPLAY_H_ */

@@ -18,7 +18,7 @@
 
 #include "buttons.h"
 #include "terminalio.h"
-
+#include "display.h"
 #include "sort.h"
 
 ///////////////////////////////////////////////////////////
@@ -146,11 +146,12 @@ void _debug_asteroids() {
 // (2) no projectiles initially
 // (3) the maximum number of asteroids, randomly distributed.
 void initialise_game(void) {
+	reset_frame();
     basePosition = 3;
 	numProjectiles = 0;
 	numAsteroids = 0;
 	paused = 0;
-
+	new_frame();
 	for(uint8_t i=0; i < MAX_ASTEROIDS ; i++) {
 		add_asteroid();
 	}
@@ -160,6 +161,7 @@ void initialise_game(void) {
 	
 	
 	redraw_whole_display();
+	draw_frame();
 }
 
 void add_asteroid(void) {
@@ -227,7 +229,7 @@ int8_t move_base(int8_t direction) {
 	if ((basePosition == 0 && direction == MOVE_LEFT) 
 		|| (basePosition == 7 && direction == MOVE_RIGHT))
 		return 0;
-	
+	draw_frame();
 	// We erase the base from its current position first
 	redraw_base(COLOUR_BLACK);
 	
@@ -237,6 +239,7 @@ int8_t move_base(int8_t direction) {
 	
 	// Redraw the base
 	redraw_base(COLOUR_BASE);
+	draw_frame();
 	
 	return 1;
 }
@@ -248,14 +251,18 @@ int8_t move_base(int8_t direction) {
 // Returns 1 if projectile fired, 0 otherwise.
 int8_t fire_projectile(void) {
 	uint8_t newProjectileNumber;
+	
 	if(numProjectiles < MAX_PROJECTILES && 
 			projectile_at(basePosition, 2) == -1) {
 		// Have space to add projectile - add it at the x position of
 		// the base, in row 2(y=2)
+		new_frame();
 		newProjectileNumber = numProjectiles++;
 		projectiles[newProjectileNumber] = GAME_POSITION(basePosition, 2);
-		redraw_projectile(newProjectileNumber, COLOUR_PROJECTILE);
-		check_asteroid_hit(newProjectileNumber, asteroid_at(basePosition, 2));
+		if (check_asteroid_hit(newProjectileNumber, asteroid_at(basePosition, 2)) != -1) {
+			redraw_projectile(newProjectileNumber, COLOUR_PROJECTILE);
+		}
+		draw_frame();
 		return 1;
 	} else {
 		return 0;
@@ -267,7 +274,7 @@ int8_t fire_projectile(void) {
 void advance_projectiles(void) {
 	uint8_t x, y;
 	int8_t projectileNumber;
-
+	new_frame();
 	projectileNumber = 0;
 	while(projectileNumber < numProjectiles) {
 		// Get the current position of the projectile
@@ -319,6 +326,7 @@ void advance_projectiles(void) {
 		projectileNumber++;
 	}
 	add_missing_asteroids();
+	draw_frame();
 }
 
 int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit) {
@@ -334,8 +342,10 @@ static uint8_t check_base_hit(int8_t x, int8_t y) {
 	int8_t asteroid = asteroid_at(x, y);
 	if (asteroid == -1)
 		return 0;
+	
 	remove_asteroid(asteroid);
 	
+	/*ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(asteroids[asteroid]), COLOUR_BLACK);*/
 	change_lives(-1);
 	return 1;
 }
@@ -343,22 +353,29 @@ static uint8_t check_base_hit(int8_t x, int8_t y) {
 /* Returns 1 if the base has a part at the given (x,y) position.
 Returns 0 otherwise. Handles destroying the asteroid. */
 static void check_all_base_hits() {
+	new_frame();
 	check_base_hit(basePosition, 1);
 	check_base_hit(basePosition-1, 0);
 	check_base_hit(basePosition, 0);
 	check_base_hit(basePosition+1, 0);
+	draw_frame();
+	new_frame();
 }
 
 void advance_asteroids() {
 	int8_t x, y, new_y;
 	uint8_t i = 0;
 	uint8_t j = 0;
-	uint8_t asteroid_states[FIELD_HEIGHT] = { 0 };
+	
+	new_frame();
 	
 	while (i < numAsteroids) {
 		j++;
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
+		
+		// set current position to black.
+		redraw_asteroid(i, COLOUR_BLACK); 
 		
 		new_y = y-1;
 		if (new_y < 0) {
@@ -370,27 +387,13 @@ void advance_asteroids() {
 		
 		asteroids[i] = GAME_POSITION(x, new_y);
 		redraw_asteroid(i, COLOUR_ASTEROID);
-		asteroid_states[new_y] |= 1<<x;
 		i++;
-	}
-	
-	
-	for (j = 0; j < MAX_ASTEROIDS; j++) {
-		if (asteroids[j] == INVALID_POSITION) {
-			continue;
-		}
-		x = GET_X_POSITION(asteroids[j]);
-		y = GET_Y_POSITION(asteroids[j]);
-		if (y < FIELD_HEIGHT-1 && !(asteroid_states[y+1] & (1<<x))) {
-			draw_on_terminal(GAME_POSITION(x, y+1), COLOUR_BLACK, ' ');
-			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, y+1), COLOUR_BLACK);
-		}
 	}
 	check_all_base_hits();
 	
 	/*redraw_all_asteroids();*/
-	
 	add_missing_asteroids();	
+	draw_frame();
 	redraw_base(COLOUR_BASE);
 	
 	#ifdef _ASTEROID_DEBUG
@@ -538,12 +541,14 @@ static void redraw_base(uint8_t colour){
 	// in the next row (1)
 	for(int8_t x = basePosition - 1; x <= basePosition+1; x++) {
 		if (x >= 0 && x < FIELD_WIDTH) {
-			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, 0), colour);
-			draw_on_terminal(GAME_POSITION(x, 0), colour, '#');
+			set_pixel(x, 0, colour);
+// 			ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(x, 0), colour);
+// 			draw_on_terminal(GAME_POSITION(x, 0), colour, '#');
 		}
 	}
-	ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(basePosition, 1), colour);
-	draw_on_terminal(GAME_POSITION(basePosition, 1), colour, '#');
+	set_pixel(basePosition, 1, colour);
+// 	ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(basePosition, 1), colour);
+// 	draw_on_terminal(GAME_POSITION(basePosition, 1), colour, '#');
 }
 
 static void redraw_all_asteroids(void) {
@@ -557,9 +562,10 @@ static void redraw_asteroid(uint8_t asteroidNumber, uint8_t colour) {
 	uint8_t asteroidPosn;
 	if(asteroidNumber < numAsteroids) {
 		asteroidPosn = asteroids[asteroidNumber];
-		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(asteroidPosn), colour);
-		
-		draw_on_terminal(asteroidPosn, colour, '@');
+		set_pixel(GET_X_POSITION(asteroidPosn), GET_Y_POSITION(asteroidPosn), colour);
+// 		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(asteroidPosn), colour);
+// 		
+// 		draw_on_terminal(asteroidPosn, colour, '@');
 	}
 }
 
@@ -576,9 +582,9 @@ static void redraw_projectile(uint8_t projectileNumber, uint8_t colour) {
 	// Check projectileNumber is valid - ignore otherwise
 	if(projectileNumber < numProjectiles) {
 		projectilePosn = projectiles[projectileNumber];
-		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(projectilePosn), colour);
-		
-		draw_on_terminal(projectilePosn, colour, 'o');
+		set_pixel(GET_X_POSITION(projectilePosn), GET_Y_POSITION(projectilePosn), colour);
+// 		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(projectilePosn), colour);
+// 		draw_on_terminal(projectilePosn, colour, 'o');
 	}
 }
 

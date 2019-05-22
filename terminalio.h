@@ -74,6 +74,9 @@ typedef enum {
 } DisplayParameter;
 
 void move_cursor(int x, int y);
+void s_invalidate_mode();
+uint8_t s_move_cursor(char* arr, uint8_t x, uint8_t y);
+uint8_t s_fast_set_display_attr(char* arr, DisplayParameter mode);
 void normal_display_mode(void);
 void reverse_video(void);
 void clear_terminal(void);

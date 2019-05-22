@@ -7,6 +7,7 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+void start_spi_buffer();
 // Set up SPI communication as a master.
 // clockdivider should be one of 2,4,8,16,32,64,128
 void spi_setup_master(uint8_t clockdivider);
@@ -15,4 +16,5 @@ void spi_setup_master(uint8_t clockdivider);
 // cyles of the divided clock (i.e. will busy wait).
 uint8_t spi_send_byte(uint8_t byte);
 
+void flush_spi_buffer();
 #endif /* SPI_H_ */

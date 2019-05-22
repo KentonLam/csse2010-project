@@ -12,9 +12,28 @@
 #include "terminalio.h"
 
 DisplayParameter currentMode = TERM_RESET;
+DisplayParameter sCurrentMode = TERM_RESET;
 
 void move_cursor(int x, int y) {
     printf_P(PSTR("\x1b[%d;%dH"), y, x);
+}
+
+void s_invalidate_mode() {
+	sCurrentMode = 50;
+}
+
+uint8_t s_move_cursor(char* arr, uint8_t x, uint8_t y){
+	sprintf_P(arr, PSTR("\x1b[%d;%dH"), y, x);
+	return 6 + (y>=10) + (x>=10);
+}
+
+uint8_t s_fast_set_display_attr(char* arr, DisplayParameter mode) {
+	if (sCurrentMode == mode) {
+		return 0;
+	}
+	sCurrentMode = mode;
+	sprintf_P(arr, PSTR("\x1b[%dm"), mode);
+	return 4 + (mode>= 10);
 }
 
 void normal_display_mode(void) {

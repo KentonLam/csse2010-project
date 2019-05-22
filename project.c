@@ -256,6 +256,8 @@ void play_game(void) {
 			asteroidTick = 120 + 3000/(get_score()+4);
 		} else {
 			asteroidTick = 150 + 30000/(get_score()+20);
+			if (asteroidTick < 550)
+				asteroidTick = 550;
 		}		
 // 		if (get_score() > 1000 || asteroidTick < 180) {
 // 			asteroidTick = 180;

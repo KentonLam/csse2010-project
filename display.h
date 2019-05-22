@@ -18,5 +18,6 @@ void reset_frame();
 void new_frame();
 void set_pixel(uint8_t x, uint8_t y, uint8_t colour);
 void draw_frame();
+void print_terminal_buffer();
 
 #endif /* DISPLAY_H_ */

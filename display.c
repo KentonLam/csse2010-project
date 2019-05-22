@@ -14,11 +14,14 @@
 #include "display.h"
 #include "ledmatrix.h"
 #include "pixel_colour.h"
+#include "timer0.h"
+#include "spi.h"
 
 #define LED_MATRIX_POSN_FROM_XY(gameX, gameY)		(gameY) , (7-(gameX))
 #define TERM_POS_FROM_GAME_POS(pos) (GET_X_POSITION(pos)*2+X_LEFT+1), (Y_BOTTOM-1-GET_Y_POSITION(pos))
 
 #define TERM_POS_FROM_GAME_XY(x, y) (x*2+X_LEFT+1), (Y_BOTTOM-1-y)
+#define TERM_POS_FROM_GAME_XY_SWAPPED(x, y) (Y_BOTTOM-1-y), (x*2+X_LEFT+1)
 
 uint32_t curState[16];
 uint32_t newState[16];
@@ -29,6 +32,8 @@ uint8_t termIndex;
 char terminalBuffer[255];
 
 uint8_t readingIntoFrame = 0;
+
+uint8_t prev_draw_x;
 
 /*uint8_t stateBitMask;*/
 
@@ -85,41 +90,41 @@ uint8_t hob (uint8_t num)
 	return ret;
 }
 
-void print_buffer() {
-	/*printf("%s", termBuffer);*/
+void print_terminal_buffer() {
+	printf("%s", termBuffer);
 	termIndex = 0;
 	memset(termBuffer, 0, sizeof(termBuffer));
 }
 
 void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 	if (termIndex > 100) {
-		print_buffer();
+		print_terminal_buffer();
 	}
 	
-	sprintf_P(termBuffer+termIndex, PSTR("\x1b[%d;%dH"), y, 2*x);
-	termIndex += 6 + (y>=10) + (x>=10);
+	uint8_t term_x =  (x+X_LEFT+1);
+	uint8_t term_y = (Y_BOTTOM-1-y);
+	/*sprintf_P(termBuffer+termIndex, PSTR("\x1b[%d;%dH"), term_y, term_x);*/
+	termIndex += s_move_cursor(termBuffer+termIndex, term_x, term_y);
 	if (colour == COLOUR_BLACK) {
-		sprintf(termBuffer+termIndex, "  ");
+		termIndex += sprintf_P(termBuffer+termIndex, PSTR(" "));
 	} else {
-		DisplayParameter mode;
-		char* c;
 		switch (colour) {
 			case COLOUR_GREEN:
-			mode = FG_GREEN;
-			c = "@@";
+			
+			termIndex += s_fast_set_display_attr(termBuffer+termIndex, FG_GREEN);
+			termIndex += sprintf_P(termBuffer+termIndex, PSTR("@"));
 			break;
 			case COLOUR_RED:
-			mode = FG_RED;
-			c = "/\\";
+			termIndex += s_fast_set_display_attr(termBuffer+termIndex, FG_RED);
+			termIndex += sprintf_P(termBuffer+termIndex, PSTR("|"));
 			break;
 			case COLOUR_YELLOW:
 			default:
-			c = "##";
-			mode = FG_YELLOW;
+			termIndex += s_fast_set_display_attr(termBuffer+termIndex, FG_YELLOW);
+			termIndex += sprintf_P(termBuffer+termIndex, PSTR("#"));
 			break;
 		}
-		sprintf_P(termBuffer+termIndex, PSTR("\x1b[%dm%s"), mode, c);
-		termIndex += 6 + (mode>=10);
+		
 // 		fast_set_display_attribute(mode);
 // 		printf("%s", c);
 	} 
@@ -127,10 +132,14 @@ void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 }
 
 void draw_frame() {
+	uint32_t startTime = get_current_time();
 	if (!readingIntoFrame) {
 		printf_P(PSTR("FAULT: draw_frame called without frame!"));
 		while (1){}
 	}
+	
+	start_spi_buffer();
+	s_invalidate_mode();
 	readingIntoFrame = 1;
 	for (uint8_t y = 0; y < 16; y++) {
 		/*printf("y=%d, %x\n", y, curState[y]);*/
@@ -172,7 +181,10 @@ void draw_frame() {
 			draw_pixel(x, y, val);
 		}
 	}
-	print_buffer();
+	print_terminal_buffer();
+	flush_spi_buffer();
 	memset(newState, 0, sizeof(newState));
-		
+	move_cursor(0, 0);
+	set_display_attribute(TERM_RESET);
+	printf("%3lu", get_current_time()-startTime);
 }

@@ -146,6 +146,9 @@
     <Compile Include="joystick.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="joystick.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="leaderboard.c">
       <SubType>compile</SubType>
     </Compile>
@@ -186,6 +189,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sound.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sound.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="spi.c">

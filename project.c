@@ -118,7 +118,7 @@ void new_game(void) {
 	
 	set_display_attribute(TERM_RESET);
 	set_display_attribute(TERM_REVERSE);
-	set_display_attribute(FG_CYAN);
+	/*set_display_attribute(FG_CYAN);*/
 	move_cursor(X_TITLE, Y_TITLE);
 	printf_P(PSTR("ASTEROIDS"));
 	set_display_attribute(TERM_RESET);
@@ -146,7 +146,7 @@ void new_game(void) {
 	clear_serial_input_buffer();
 }
 
-uint8_t prev_joystick = 0;
+uint8_t prev_joystick = 100;
 uint32_t last_joystick_time = 0;
 uint16_t joystick_interval = 500;
 
@@ -200,7 +200,7 @@ void play_game(void) {
 		escape_sequence_char = -1;
 		button = button_pushed();
 		joy = check_joystick_move(get_joystick_input());
-		/*printf("%d\n", joy);*/
+
 		
 		if(button == NO_BUTTON_PUSHED) {
 			// No push button was pushed, see if there is any serial input

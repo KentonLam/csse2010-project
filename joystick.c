@@ -16,7 +16,9 @@ uint8_t adc_xy = 0;	/* 0 = x, 1 = y */
 uint16_t x_centre;
 uint16_t y_centre;
 
-int8_t last_move = 0;
+uint8_t last_x = 0;
+uint8_t last_y = 0;
+uint8_t last_move = 0;
 	
 void init_joystick() {
 			// Set up ADC - AVCC reference, right adjust
@@ -27,7 +29,7 @@ void init_joystick() {
 	// divider of 64. (The ADC clock must be somewhere
 	// between 50kHz and 200kHz. We will divide our 8MHz clock by 64
 	// to give us 125kHz.)
-	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1);
+	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 	
 	
 	ADMUX &= ~1; // using ADC0, XY.
@@ -49,12 +51,16 @@ void init_joystick() {
 
 ISR(ADC_vect) {
 	uint16_t value = ADC;
-	if (adc_xy && (value < x_centre-DEAD_RADIUS || value > x_centre+DEAD_RADIUS)) {
-		
-		last_move = value > x_centre ? 2 : 4;
+	if (adc_xy) {
+		if (value < x_centre-DEAD_RADIUS || value > x_centre+DEAD_RADIUS) {
+			last_x = value > x_centre ? 2 : 4;
+		} else {
+			last_x = 0;
+		}
 	} else if (value < y_centre-DEAD_RADIUS || value > y_centre+DEAD_RADIUS) {
-			
-		last_move = value > y_centre ? 1 : 3;
+		last_y = value > y_centre ? 1 : 3;
+	} else {
+		last_y = 0;
 	}
 	adc_xy ^= 1;
 	if (adc_xy) {
@@ -66,7 +72,5 @@ ISR(ADC_vect) {
 }
 
 uint8_t get_joystick_input() {
-	uint8_t move = last_move;
-	last_move = 0;
-	return move;
+	return last_x > 0 ? last_x : last_y;
 }

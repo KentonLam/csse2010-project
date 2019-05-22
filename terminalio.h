@@ -17,11 +17,11 @@
 #define Y_BOTTOM 21
 
 #define X_LEADERBOARD (X_RIGHT+2)
-#define X_SCORE (X_LEFT+3)
+#define X_SCORE (X_LEFT)
 #define Y_SCORE (Y_BOTTOM+1)
 
-#define X_TITLE 6
-#define Y_TITLE (Y_TOP-2)
+#define X_TITLE 2
+#define Y_TITLE 2
 
 #define Y_GAME_OVER (Y_TOP+6)
 #define X_GAME_OVER (X_LEFT+4)

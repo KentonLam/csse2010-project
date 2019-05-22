@@ -143,6 +143,9 @@
     <Compile Include="game.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="joystick.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="leaderboard.c">
       <SubType>compile</SubType>
     </Compile>

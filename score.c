@@ -61,7 +61,7 @@ int32_t get_score(void) {
 void print_score(void) {
 	fast_set_display_attribute(TERM_RESET);
 	move_cursor(score_x, score_y);
-	printf("Score:%6lu", score);
+	printf("Score:%4lu", score);
 }
 
 void update_score_tick(void) {
@@ -106,7 +106,7 @@ void change_lives(int8_t change) {
 void print_lives() {
 	move_cursor(score_x, score_y+1);
 	set_display_attribute(TERM_RESET);
-	printf_P(PSTR("Lives:      "));
+	printf_P(PSTR("Lives:    "));
 	
 	/* LEDS
 	2 3 4 5 
@@ -118,24 +118,24 @@ void print_lives() {
 		case 4:
 		leds = 0b1111;
 		fast_set_display_attribute(FG_CYAN);
-		draw_horizontal_line(score_y+1, score_x+8, score_x+11);
+		draw_horizontal_line(score_y+1, score_x+6, score_x+9);
 		break;
 		
 		case 3:
 		leds = 0b0111;
 		fast_set_display_attribute(FG_GREEN);
-		draw_horizontal_line(score_y+1, score_x+9, score_x+11);
+		draw_horizontal_line(score_y+1, score_x+7, score_x+9);
 		break;
 		
 		case 2:
 		leds = 0b0110;
 		fast_set_display_attribute(FG_YELLOW);
-		draw_horizontal_line(score_y+1, score_x+10, score_x+11);
+		draw_horizontal_line(score_y+1, score_x+8, score_x+9);
 		break;
 		
 		case 1:
 		fast_set_display_attribute(FG_RED);
-		draw_horizontal_line(score_y+1, score_x+11, score_x+11);
+		draw_horizontal_line(score_y+1, score_x+9, score_x+9);
 		leds = 0b0010;
 		break;
 		

@@ -18,6 +18,7 @@
 #include "terminalio.h"
 #include "score.h"
 #include "timer0.h"
+#include "joystick.h"
 #include "game.h"
 
 #include "leaderboard.h"
@@ -66,12 +67,14 @@ void initialise_hardware(void) {
 	init_timer0();
 	
 	init_leaderboard();
+	init_joystick();
 	
 	// Turn on global interrupts
 	sei();
 }
 
 void splash_screen(void) {
+	
 	// Clear terminal screen and output a message
 	clear_terminal();
 	move_cursor(10,10);
@@ -112,8 +115,13 @@ void new_game(void) {
 	
 	initialise_game();
 	
+	
+	set_display_attribute(TERM_RESET);
+	set_display_attribute(TERM_REVERSE);
+	set_display_attribute(FG_CYAN);
 	move_cursor(X_TITLE, Y_TITLE);
 	printf_P(PSTR("ASTEROIDS"));
+	set_display_attribute(TERM_RESET);
 	
 	
 // 	move_cursor(X_LEFT+1, Y_TOP+1);
@@ -138,9 +146,31 @@ void new_game(void) {
 	clear_serial_input_buffer();
 }
 
+uint8_t prev_joystick = 0;
+uint32_t last_joystick_time = 0;
+uint16_t joystick_interval = 500;
+
+uint8_t check_joystick_move(uint8_t joystick) {
+	uint32_t cur_time = get_current_time();
+	
+	if (joystick != prev_joystick) { // react instantly at first but set long delay.
+		prev_joystick = joystick;
+		last_joystick_time = cur_time;
+		joystick_interval = 300;
+		return joystick;
+	}
+	
+	if (cur_time > last_joystick_time + joystick_interval) {
+		joystick_interval = 100;
+		last_joystick_time = cur_time;
+		return joystick;
+	}
+	return 0;
+}
+
 void play_game(void) {
 	uint32_t current_time, last_proj_move, last_asteroid_move;
-	int8_t button;
+	int8_t button, joy;
 	char serial_input, escape_sequence_char;
 	uint8_t characters_into_escape_sequence = 0;
 	
@@ -152,6 +182,8 @@ void play_game(void) {
 	current_time = get_current_time();
 	last_proj_move = current_time;
 	last_asteroid_move = current_time;
+	
+	get_joystick_input();
 	
 	// We play the game until it's over
 	while(!is_game_over()) {
@@ -167,6 +199,8 @@ void play_game(void) {
 		serial_input = -1;
 		escape_sequence_char = -1;
 		button = button_pushed();
+		joy = check_joystick_move(get_joystick_input());
+		/*printf("%d\n", joy);*/
 		
 		if(button == NO_BUTTON_PUSHED) {
 			// No push button was pushed, see if there is any serial input
@@ -218,28 +252,29 @@ void play_game(void) {
 				move_cursor(X_TITLE, Y_TITLE+1);
 				clear_to_end_of_line();
 				clear_all_input_buffers();
+				get_joystick_input();
 			}
 		}
 		if (is_paused()) {
 			continue;
 		}
 		
-		if (button==3 || escape_sequence_char=='D' || serial_input=='L' || serial_input=='l') {
+		if ((joy)==4 || button==3 || escape_sequence_char=='D' || serial_input=='L' || serial_input=='l') {
 			// Button 3 pressed OR left cursor key escape sequence completed OR
-			// letter L (lowercase or uppercase) pressed - attempt to move left
+			// letter L (lowercase or uppercase) pressed - attempt to move left			
 			move_base(MOVE_LEFT);
-		} else if(button==2 || escape_sequence_char=='A' || serial_input==' ') {
+		} else if((joy)==1||button==2 || escape_sequence_char=='A' || serial_input==' ') {
 			// Button 2 pressed or up cursor key escape sequence completed OR
 			// space bar pressed - attempt to fire projectile
 			fire_projectile();
 		} else if(button==1 || escape_sequence_char=='B') {
 			// Button 1 pressed OR down cursor key escape sequence completed
 			// Ignore at present
-		} else if(button==0 || escape_sequence_char=='C' || serial_input=='R' || serial_input=='r') {
+		} else if((joy)==2||button==0 || escape_sequence_char=='C' || serial_input=='R' || serial_input=='r') {
 			// Button 0 pressed OR right cursor key escape sequence completed OR
 			// letter R (lowercase or uppercase) pressed - attempt to move right
 			move_base(MOVE_RIGHT);
-		} else 
+		} else {};
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
 		

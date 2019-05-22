@@ -13,7 +13,7 @@
 // bounds of game area border
 #define X_LEFT 2
 #define Y_TOP 4
-#define X_RIGHT 19
+#define X_RIGHT 11
 #define Y_BOTTOM 21
 
 #define X_LEADERBOARD (X_RIGHT+2)

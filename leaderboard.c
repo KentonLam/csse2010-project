@@ -170,6 +170,8 @@ void ask_name(uint16_t score) {
 				continue;
 			}
 			
+			if (0 && escape_sequence_char) {}
+			
 		}
 	}
 #endif

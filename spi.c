@@ -8,11 +8,11 @@
 #include "spi.h"
 
 uint8_t buffer[255];
-uint8_t index = 0;
+uint8_t bufferIndex = 0;
 uint8_t buffering = 0;
 
 void start_spi_buffer() {
-	index = 0;
+	bufferIndex = 0;
 	buffering = 1;	
 }
 
@@ -81,16 +81,17 @@ uint8_t spi_send_byte(uint8_t byte) {
 	if (!buffering) {
 		return real_spi_send_byte(byte);
 	} else {
-		buffer[index] = byte;
-		index++;
+		buffer[bufferIndex] = byte;
+		bufferIndex++;
+		return 0;
 	}
 }
 
 void flush_spi_buffer() {
-	for (uint8_t i = 0; i < index; i++) {
+	for (uint8_t i = 0; i < bufferIndex; i++) {
 		real_spi_send_byte(buffer[i]);
 		buffer[i] = 0;
 	}
 	buffering = 0;
-	index = 0;
+	bufferIndex = 0;
 }

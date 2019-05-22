@@ -107,8 +107,6 @@ static void add_asteroid_in_rows(uint8_t min_y);
 static int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit);
 static void add_missing_asteroids(void);
 
-static void draw_on_terminal(uint8_t position, uint8_t colour, char symbol);
-
 // Remove the asteroid/projectile at the given index number. If
 // the index is not valid, then no removal is performed. This 
 // enables the functions to be used like:
@@ -582,30 +580,5 @@ static void redraw_projectile(uint8_t projectileNumber, uint8_t colour) {
 		set_pixel(GET_X_POSITION(projectilePosn), GET_Y_POSITION(projectilePosn), colour);
 // 		ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(projectilePosn), colour);
 // 		draw_on_terminal(projectilePosn, colour, 'o');
-	}
-}
-
-static void draw_on_terminal(uint8_t position, uint8_t colour, char symbol) {
-	/*return;*/
-	move_cursor(TERM_POS_FROM_GAME_POS(position));
-	if (colour == COLOUR_BLACK) {
-		printf_P(PSTR("  "));
-	} else {
-		DisplayParameter mode;
-		switch (colour) {
-			case COLOUR_ASTEROID:
-			mode = FG_GREEN;
-			break;
-			case COLOUR_PROJECTILE:
-			mode = FG_RED;
-			break;
-			case COLOUR_BASE:
-			default:
-			mode = FG_YELLOW;
-			break;
-		}
-		fast_set_display_attribute(mode);
-		printf("%c", symbol);
-		printf("%c", symbol);
 	}
 }

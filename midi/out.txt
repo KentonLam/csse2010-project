@@ -1,0 +1,399 @@
+<meta message time_signature numerator=4 denominator=4 clocks_per_click=24 notated_32nd_notes_per_beat=8 time=0>
+<meta message set_tempo tempo=375000 time=0>
+note_on channel=0 note=73 velocity=96 time=1.5
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+  1 Note:    * 73  END: 1.6867  START: 1.5  TICK: 1920.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666666572
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+  3 Note:       * 76  END: 1.8742  START: 1.6875  TICK: 2160.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666666572
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+  5 Note:           * 80  END: 2.0617  START: 1.875  TICK: 2400.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+  7 Note:      * 75  END: 2.4367  START: 2.0625  TICK: 2640.0  SEMIQUA: 7.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+  9 Note:         * 78  END: 2.6242  START: 2.4375  TICK: 3120.0  SEMIQUA: 3.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+ 11 Note:              * 83  END: 2.8117  START: 2.625  TICK: 3360.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=80 velocity=0 time=0.37421875000000004
+ 13 Note:           * 80  END: 3.1867  START: 2.8125  TICK: 3600.0  SEMIQUA: 7.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+ 15 Note:         * 78  END: 3.3742  START: 3.1875  TICK: 4080.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 17 Note:       * 76  END: 3.5617  START: 3.375  TICK: 4320.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+ 19 Note:      * 75  END: 3.9367  START: 3.5625  TICK: 4560.0  SEMIQUA: 7.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 21 Note:       * 76  END: 4.1242  START: 3.9375  TICK: 5040.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+ 23 Note:      * 75  END: 4.3117  START: 4.125  TICK: 5280.0  SEMIQUA: 3.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+ 25 Note:  * 71  END: 4.4992  START: 4.3125  TICK: 5520.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+ 27 Note: * 68  END: 4.6867  START: 4.5  TICK: 5760.0  SEMIQUA: 3.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+ 29 Note:    * 73  END: 4.8742  START: 4.6875  TICK: 6000.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 31 Note:       * 76  END: 5.0617  START: 4.875  TICK: 6240.0  SEMIQUA: 3.9833
+note_on channel=0 note=72 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=72 velocity=0 time=0.37421875000000004
+ 33 Note:   * 72  END: 5.4367  START: 5.0625  TICK: 6480.0  SEMIQUA: 7.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+ 35 Note:      * 75  END: 5.6242  START: 5.4375  TICK: 6960.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+ 37 Note:           * 80  END: 5.8117  START: 5.625  TICK: 7200.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.37421875000000004
+ 39 Note:       * 76  END: 6.1867  START: 5.8125  TICK: 7440.0  SEMIQUA: 7.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+ 41 Note:    * 73  END: 6.3742  START: 6.1875  TICK: 7920.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+ 43 Note: * 68  END: 6.5617  START: 6.375  TICK: 8160.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 45 Note:       * 76  END: 6.7492  START: 6.5625  TICK: 8400.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+ 47 Note:      * 75  END: 7.1242  START: 6.75  TICK: 8640.0  SEMIQUA: 7.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+ 49 Note:    * 73  END: 7.3117  START: 7.125  TICK: 9120.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+ 51 Note:      * 75  END: 7.4992  START: 7.3125  TICK: 9360.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 53 Note:       * 76  END: 7.6867  START: 7.5  TICK: 9600.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+ 55 Note:         * 78  END: 7.8742  START: 7.6875  TICK: 9840.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.016666666666670455
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+ 57 Note:           * 80  END: 8.0617  START: 7.875  TICK: 10080.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.37421875000000004
+ 59 Note:         * 78  END: 8.4367  START: 8.0625  TICK: 10320.0  SEMIQUA: 7.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+ 61 Note:              * 83  END: 8.6242  START: 8.4375  TICK: 10800.0  SEMIQUA: 3.9833
+note_on channel=0 note=85 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=85 velocity=0 time=0.18671875000000002
+ 63 Note:                * 85  END: 8.8117  START: 8.625  TICK: 11040.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.37421875000000004
+ 65 Note:           * 80  END: 9.1867  START: 8.8125  TICK: 11280.0  SEMIQUA: 7.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+ 67 Note:              * 83  END: 9.3742  START: 9.1875  TICK: 11760.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+ 69 Note:         * 78  END: 9.5617  START: 9.375  TICK: 12000.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+ 71 Note:           * 80  END: 9.7492  START: 9.5625  TICK: 12240.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 73 Note:       * 76  END: 9.9367  START: 9.75  TICK: 12480.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+ 75 Note: * 68  END: 10.1242  START: 9.9375  TICK: 12720.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+ 77 Note:      * 75  END: 10.3117  START: 10.125  TICK: 12960.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.18671875000000002
+ 79 Note: * 66  END: 10.4992  START: 10.3125  TICK: 13200.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.18671875000000002
+ 81 Note: * 66  END: 10.6867  START: 10.5  TICK: 13440.0  SEMIQUA: 3.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+ 83 Note:  * 71  END: 10.8742  START: 10.6875  TICK: 13680.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+ 85 Note:       * 76  END: 11.0617  START: 10.875  TICK: 13920.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+ 87 Note:      * 75  END: 11.4367  START: 11.0625  TICK: 14160.0  SEMIQUA: 7.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+ 89 Note:  * 71  END: 11.6242  START: 11.4375  TICK: 14640.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.18671875000000002
+ 91 Note: * 66  END: 11.8117  START: 11.625  TICK: 14880.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=1.12421875
+ 93 Note: * 68  END: 12.9367  START: 11.8125  TICK: 15120.0  SEMIQUA: 23.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+ 95 Note: * 68  END: 13.1242  START: 12.9375  TICK: 16560.0  SEMIQUA: 3.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+ 97 Note:  * 71  END: 13.3117  START: 13.125  TICK: 16800.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+ 99 Note:      * 75  END: 13.4992  START: 13.3125  TICK: 17040.0  SEMIQUA: 3.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+101 Note:    * 73  END: 13.6867  START: 13.5  TICK: 17280.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+103 Note:       * 76  END: 13.8742  START: 13.6875  TICK: 17520.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+105 Note:           * 80  END: 14.0617  START: 13.875  TICK: 17760.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+107 Note:      * 75  END: 14.4367  START: 14.0625  TICK: 18000.0  SEMIQUA: 7.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+109 Note:         * 78  END: 14.6242  START: 14.4375  TICK: 18480.0  SEMIQUA: 3.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+111 Note:              * 83  END: 14.8117  START: 14.625  TICK: 18720.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.37421875000000004
+113 Note:           * 80  END: 15.1867  START: 14.8125  TICK: 18960.0  SEMIQUA: 7.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+115 Note:         * 78  END: 15.3742  START: 15.1875  TICK: 19440.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+117 Note:       * 76  END: 15.5617  START: 15.375  TICK: 19680.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+119 Note:      * 75  END: 15.9367  START: 15.5625  TICK: 19920.0  SEMIQUA: 7.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+121 Note:       * 76  END: 16.1242  START: 15.9375  TICK: 20400.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+123 Note:      * 75  END: 16.3117  START: 16.125  TICK: 20640.0  SEMIQUA: 3.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+125 Note:  * 71  END: 16.4992  START: 16.3125  TICK: 20880.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+127 Note: * 68  END: 16.6867  START: 16.5  TICK: 21120.0  SEMIQUA: 3.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+129 Note:    * 73  END: 16.8742  START: 16.6875  TICK: 21360.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+131 Note:       * 76  END: 17.0617  START: 16.875  TICK: 21600.0  SEMIQUA: 3.9833
+note_on channel=0 note=72 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=72 velocity=0 time=0.37421875000000004
+133 Note:   * 72  END: 17.4367  START: 17.0625  TICK: 21840.0  SEMIQUA: 7.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+135 Note:      * 75  END: 17.6242  START: 17.4375  TICK: 22320.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+137 Note:           * 80  END: 17.8117  START: 17.625  TICK: 22560.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.37421875000000004
+139 Note:       * 76  END: 18.1867  START: 17.8125  TICK: 22800.0  SEMIQUA: 7.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+141 Note:    * 73  END: 18.3742  START: 18.1875  TICK: 23280.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+143 Note: * 68  END: 18.5617  START: 18.375  TICK: 23520.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+145 Note:       * 76  END: 18.7492  START: 18.5625  TICK: 23760.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+147 Note:      * 75  END: 19.1242  START: 18.75  TICK: 24000.0  SEMIQUA: 7.9833
+note_on channel=0 note=73 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=73 velocity=0 time=0.18671875000000002
+149 Note:    * 73  END: 19.3117  START: 19.125  TICK: 24480.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+151 Note:      * 75  END: 19.4992  START: 19.3125  TICK: 24720.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+153 Note:       * 76  END: 19.6867  START: 19.5  TICK: 24960.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+155 Note:         * 78  END: 19.8742  START: 19.6875  TICK: 25200.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+157 Note:           * 80  END: 20.0617  START: 19.875  TICK: 25440.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.37421875000000004
+159 Note:         * 78  END: 20.4367  START: 20.0625  TICK: 25680.0  SEMIQUA: 7.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+161 Note:              * 83  END: 20.6242  START: 20.4375  TICK: 26160.0  SEMIQUA: 3.9833
+note_on channel=0 note=85 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=85 velocity=0 time=0.18671875000000002
+163 Note:                * 85  END: 20.8117  START: 20.625  TICK: 26400.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.37421875000000004
+165 Note:           * 80  END: 21.1867  START: 20.8125  TICK: 26640.0  SEMIQUA: 7.9833
+note_on channel=0 note=83 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=83 velocity=0 time=0.18671875000000002
+167 Note:              * 83  END: 21.3742  START: 21.1875  TICK: 27120.0  SEMIQUA: 3.9833
+note_on channel=0 note=78 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=78 velocity=0 time=0.18671875000000002
+169 Note:         * 78  END: 21.5617  START: 21.375  TICK: 27360.0  SEMIQUA: 3.9833
+note_on channel=0 note=80 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=80 velocity=0 time=0.18671875000000002
+171 Note:           * 80  END: 21.7492  START: 21.5625  TICK: 27600.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+173 Note:       * 76  END: 21.9367  START: 21.75  TICK: 27840.0  SEMIQUA: 3.9833
+note_on channel=0 note=68 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=68 velocity=0 time=0.18671875000000002
+175 Note: * 68  END: 22.1242  START: 21.9375  TICK: 28080.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.18671875000000002
+177 Note:      * 75  END: 22.3117  START: 22.125  TICK: 28320.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.18671875000000002
+179 Note: * 66  END: 22.4992  START: 22.3125  TICK: 28560.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.18671875000000002
+181 Note: * 66  END: 22.6867  START: 22.5  TICK: 28800.0  SEMIQUA: 3.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+183 Note:  * 71  END: 22.8742  START: 22.6875  TICK: 29040.0  SEMIQUA: 3.9833
+note_on channel=0 note=76 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=76 velocity=0 time=0.18671875000000002
+185 Note:       * 76  END: 23.0617  START: 22.875  TICK: 29280.0  SEMIQUA: 3.9833
+note_on channel=0 note=75 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=75 velocity=0 time=0.37421875000000004
+187 Note:      * 75  END: 23.4367  START: 23.0625  TICK: 29520.0  SEMIQUA: 7.9833
+note_on channel=0 note=71 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=71 velocity=0 time=0.18671875000000002
+189 Note:  * 71  END: 23.6242  START: 23.4375  TICK: 30000.0  SEMIQUA: 3.9833
+note_on channel=0 note=66 velocity=96 time=0.00078125
+PRECEDING SILENCE of semiquaver length 0.01666666666665151
+note_off channel=0 note=66 velocity=0 time=0.16562500000000002
+191 Note: * 66  END: 23.7906  START: 23.625  TICK: 30240.0  SEMIQUA: 3.5333
+note_on channel=0 note=68 velocity=96 time=0.209375
+PRECEDING SILENCE of semiquaver length 4.466666666666697
+note_off channel=0 note=68 velocity=0 time=0.93671875
+193 Note: * 68  END: 24.9367  START: 24.0  TICK: 30720.0  SEMIQUA: 19.9833
+note_on channel=0 note=56 velocity=100 time=0.5578125
+PRECEDING SILENCE of semiquaver length 11.900000000000015
+<meta message key_signature key='Db' time=0.0054687500000000005>
+note_on channel=0 note=58 velocity=96 time=0
+OVERLAPPING NOTES AT 25.5
+
+NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_A4, 8), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_CS4, 8), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_F4, 8), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_G4, 8), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_D5, 4), NOTE_WORD(NOTE_A4, 8), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_A3, 24), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_A4, 8), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_CS4, 8), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_F4, 8), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_D4, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_G4, 8), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_D5, 4), NOTE_WORD(NOTE_A4, 8), NOTE_WORD(NOTE_C5, 4), NOTE_WORD(NOTE_G4, 4), NOTE_WORD(NOTE_A4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_A3, 4), NOTE_WORD(NOTE_E4, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_F4, 4), NOTE_WORD(NOTE_E4, 8), NOTE_WORD(NOTE_C4, 4), NOTE_WORD(NOTE_G3, 4), NOTE_WORD(NOTE_SILENCE, 4), NOTE_WORD(NOTE_A3, 20), NOTE_WORD(NOTE_SILENCE, 12)
+
+99 distinct notes
+198 bytes of progmem

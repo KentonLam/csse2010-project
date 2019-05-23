@@ -68,6 +68,7 @@ void initialise_hardware(void) {
 	
 	init_leaderboard();
 	init_joystick();
+	init_sound();
 	
 	// Turn on global interrupts
 	sei();

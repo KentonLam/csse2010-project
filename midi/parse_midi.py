@@ -65,7 +65,7 @@ notes = [x for x in notes if x.duration]
 
 # print(notes)
 print()
-SHIFT = -11
+SHIFT = -0
 print(', '.join(
     f'NOTE_WORD({note_names[n+SHIFT] if n != 255 else "NOTE_SILENCE"}, {d})' 
     for n, d in notes))

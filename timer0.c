@@ -12,7 +12,7 @@
 #include <avr/interrupt.h>
 
 #include "score.h"
-
+#include "sound.h"
 #include "timer0.h"
 
 /* Our internal clock tick count - incremented every 
@@ -81,4 +81,6 @@ ISR(TIMER0_COMPA_vect) {
 	
 	if (clockTicks % 10 == 0)
 		update_score_tick();
+	if (clockTicks % 31 == 0)
+		tick_sound();
 }

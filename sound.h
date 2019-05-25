@@ -7,17 +7,28 @@
 
 
 #ifndef SOUND_H_
+#include <stdint.h>
 #define SOUND_H_
 
-#define SOUND_MUSIC 0;
-#define SOUND_STARTUP 1;
-#define SOUND_PROJ_FIRE 2;
-#define SOUND_PROJ_HIT 3;
+#define TRACK_WINDOWS 0
+#define TRACK_TOUHOU 3
+#define TRACK_SHUTDOWN 4
+#define TRACK_COIN 1
+#define TRACK_ERROR 2
+#define TRACK_SILENCE 5
 
 
 void init_sound();
+void tick_sound();
+void resume_track(uint8_t track);
+void play_track(uint8_t track);
 
-
+void start_bgm();
+void stop_bgm();
+void toggle_bgm();
+void unpause_music();
+void pause_music();
+void try_unpause_music();
 
 #define NOTE_B0 0
 #define NOTE_C1 1
@@ -108,6 +119,8 @@ void init_sound();
 #define NOTE_CS8 86
 #define NOTE_D8 87
 #define NOTE_DS8 88
+
+#define NOTE_SILENCE 255
 
 
 #endif /* SOUND_H_ */

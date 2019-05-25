@@ -20,6 +20,7 @@
 #include "terminalio.h"
 #include "display.h"
 #include "sort.h"
+#include "sound.h"
 
 ///////////////////////////////////////////////////////////
 // Colours
@@ -333,6 +334,7 @@ int8_t check_asteroid_hit(int8_t projectileIndex, int8_t asteroidHit) {
 	remove_projectile(projectileIndex);
 	remove_asteroid(asteroidHit);
 	add_to_score(1);
+	play_track(TRACK_COIN);
 	return 1;
 }
 
@@ -345,6 +347,7 @@ static uint8_t check_base_hit(int8_t x, int8_t y) {
 	
 	/*ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_GAME_POSN(asteroids[asteroid]), COLOUR_BLACK);*/
 	change_lives(-1);
+	play_track(TRACK_ERROR);
 	return 1;
 }
 

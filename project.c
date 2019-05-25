@@ -20,7 +20,7 @@
 #include "timer0.h"
 #include "joystick.h"
 #include "game.h"
-
+#include "sound.h"
 #include "leaderboard.h"
 
 #define F_CPU 8000000L
@@ -48,7 +48,7 @@ int main(void) {
 	// Show the splash screen message. Returns when display
 	// is complete
 	splash_screen();
-	
+	start_bgm();
 	while(1) {
 		new_game();
 		play_game();
@@ -75,17 +75,20 @@ void initialise_hardware(void) {
 }
 
 void splash_screen(void) {
-	
+	play_track(TRACK_WINDOWS);
 	// Clear terminal screen and output a message
 	clear_terminal();
 	move_cursor(10,10);
-	printf_P(PSTR("Asteroids"));
+	printf_P(PSTR("* Asteroids *"));
 	move_cursor(10,12);
 	printf_P(PSTR("CSSE2010/7201 project by Kenton Lam (45294583)"));
+	
+	print_leaderboard(10, 14);
 	
 	// Output the scrolling message to the LED matrix
 	// and wait for a push button to be pushed.
 	ledmatrix_clear();
+	
 	while(1) {
 		set_scrolling_display_text("45294583", COLOUR_ORANGE);
 		// Scroll the message until it has scrolled off the 
@@ -178,6 +181,7 @@ void play_game(void) {
 	int16_t asteroidTick = 0;
 	uint32_t pause_time = 0;
 	
+	
 	// Get the current time and remember this as the last time the projectiles
     // were moved.
 	current_time = get_current_time();
@@ -185,6 +189,7 @@ void play_game(void) {
 	last_asteroid_move = current_time;
 	
 	get_joystick_input();
+	
 	
 	// We play the game until it's over
 	while(!is_game_over()) {
@@ -246,6 +251,7 @@ void play_game(void) {
 				fast_set_display_attribute(FG_BLACK);
 				printf_P(PSTR("(Paused)"));
 				fast_set_display_attribute(TERM_RESET);
+				pause_music();
 			} else {
 				current_time = get_current_time();
 				last_asteroid_move += current_time-pause_time;
@@ -254,9 +260,14 @@ void play_game(void) {
 				clear_to_end_of_line();
 				clear_all_input_buffers();
 				get_joystick_input();
+				try_unpause_music();
 			}
 		}
 		if (is_paused()) {
+			continue;
+		}
+		if (serial_input == 'M' || serial_input == 'm') {
+			toggle_bgm();
 			continue;
 		}
 		
@@ -310,6 +321,8 @@ void play_game(void) {
 }
 
 void handle_game_over() {
+	stop_bgm();
+	play_track(TRACK_SHUTDOWN);
 	for (uint8_t y = 0; y < H_GAME_OVER+2; y++) {
 		move_cursor(X_GAME_OVER+1, Y_GAME_OVER+y);
 		clear_to_end_of_line();

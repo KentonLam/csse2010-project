@@ -13,7 +13,7 @@
 #include "terminalio.h"
 #include "serialio.h"
 
-#define EEPROM_SIG 0xfaae
+#define EEPROM_SIG 0xfade
 #define SIG_ADDRESS (uint16_t *)20
 #define SCORES_START (uint16_t *)40
 #define NAMES_START (void *)60

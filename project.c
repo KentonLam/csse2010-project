@@ -39,6 +39,8 @@ void handle_game_over(void);
 // ASCII code for Escape character
 #define ESCAPE_CHAR 27
 
+uint8_t bgm_on = 0;
+
 /////////////////////////////// main //////////////////////////////////
 int main(void) {
 	// Setup hardware and call backs. This will turn on 
@@ -49,6 +51,7 @@ int main(void) {
 	// is complete
 	splash_screen();
 	start_bgm();
+	bgm_on = 1;
 	while(1) {
 		new_game();
 		play_game();
@@ -189,6 +192,8 @@ void play_game(void) {
 	last_asteroid_move = current_time;
 	
 	get_joystick_input();
+	if (bgm_on)
+		start_bgm();
 	
 	
 	// We play the game until it's over
@@ -268,6 +273,7 @@ void play_game(void) {
 		}
 		if (serial_input == 'M' || serial_input == 'm') {
 			toggle_bgm();
+			bgm_on ^= 1;
 			continue;
 		}
 		

@@ -160,7 +160,7 @@ void tick_sound() {
 	if (semiquavers >= extract_duration(curTrack, musicIndexes[curTrack])) {
 		semiquavers = 0;
 		musicIndexes[curTrack] = musicIndexes[curTrack]+1;
-		printf("track %d, note %d\n", curTrack, musicIndexes[curTrack]);
+		/*printf("track %d, note %d\n", curTrack, musicIndexes[curTrack]);*/
 		if (musicIndexes[curTrack] >= musicOffsets[curTrack+1]-musicOffsets[curTrack]) {
 			// reached end of music.
 			/*printf("ENDED");*/

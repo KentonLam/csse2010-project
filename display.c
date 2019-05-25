@@ -91,7 +91,9 @@ uint8_t hob (uint8_t num)
 }
 
 void print_terminal_buffer() {
-	printf("%s", termBuffer);
+	if (! (PIND & (1<<PIND3))) {
+		printf("%s", termBuffer);
+	}
 	termIndex = 0;
 	memset(termBuffer, 0, sizeof(termBuffer));
 }

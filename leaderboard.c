@@ -91,7 +91,7 @@ uint8_t made_leaderboard(uint16_t new_score) {
 void sort_leaderboard() {
 	uint8_t i, j;
 	HighScore temp;
-	
+	// from https://www.geeksforgeeks.org/insertion-sort/
 	for (i = 1; i < numScores; i++) {
 		/* invariant:  array[0..i-1] is sorted */
 		j = i;

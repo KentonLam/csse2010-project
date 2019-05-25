@@ -128,8 +128,8 @@ void init_sound() {
 		musicOffsets[i+1] = musicOffsets[i] + musicLengths[i];
 	}
 	
-	PCICR = 1<<PCIE3;
-	PCMSK3 = 1<<PCINT29;
+	PCICR |= 1<<PCIE3;
+	PCMSK3 |= 1<<PCINT29;
 	
 	DDRD &= ~(1<<DDRD5); // mute pin
 	DDRD |= (1<<DDRD4); // buzzer pin

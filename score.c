@@ -59,7 +59,7 @@ int32_t get_score(void) {
 }
 
 void print_score(void) {
-	fast_set_display_attribute(TERM_RESET);
+	set_display_attribute(TERM_RESET);
 	move_cursor(score_x, score_y);
 	printf("Score:%4lu", score);
 }

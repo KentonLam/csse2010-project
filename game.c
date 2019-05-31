@@ -19,7 +19,6 @@
 #include "buttons.h"
 #include "terminalio.h"
 #include "display.h"
-#include "sort.h"
 #include "sound.h"
 
 ///////////////////////////////////////////////////////////
@@ -139,6 +138,23 @@ void _debug_asteroids() {
 		
 	}
 }
+
+void sort_asteroids() {
+	uint8_t i, j;
+	uint8_t temp;
+	// from https://www.geeksforgeeks.org/insertion-sort/
+	for (i = 1; i < numAsteroids; i++) {
+		/* invariant:  array[0..i-1] is sorted */
+		j = i;
+		/* customization bug: SWAP is not used here */
+		temp = asteroids[j];
+		while (j > 0 && (GET_Y_POSITION(asteroids[j-1]) > GET_Y_POSITION(temp))) {
+			asteroids[j] = asteroids[j-1];
+			j--;
+		}
+		asteroids[j] = temp;
+	}
+}
  
 // Initialise game field:
 // (1) base starts in the centre (x=3)
@@ -155,7 +171,7 @@ void initialise_game(void) {
 		add_asteroid();
 	}
 	
-	asteroid_sort(asteroids, numAsteroids);
+	sort_asteroids();
 	/*_debug_asteroids();*/
 	
 	
@@ -366,8 +382,9 @@ void advance_asteroids() {
 	uint8_t j = 0;
 	
 	new_frame();
-	
-	while (i < numAsteroids) {
+	set_display_attribute(TERM_RESET);
+	uint8_t oldNumAsteroids = numAsteroids;
+	while (i < oldNumAsteroids) {
 		j++;
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
@@ -418,7 +435,7 @@ uint8_t is_paused() {
 /******** INTERNAL FUNCTIONS ****************/
 
 static void add_missing_asteroids(void) {
-	for (uint8_t i = 0; i < MAX_ASTEROIDS-numAsteroids; i++) {
+	for (uint8_t i = numAsteroids; i < MAX_ASTEROIDS; i++) {
 		/*printf_P(PSTR("ADDING MISSING ASTEROID"));*/
 		add_asteroid_in_rows(FIELD_HEIGHT-1);
 	}
@@ -473,13 +490,12 @@ static void remove_asteroid(int8_t asteroidNumber) {
 	// Remove the asteroid from the display
 	redraw_asteroid(asteroidNumber, COLOUR_BLACK);
 	
-	
-	if(asteroidNumber < numAsteroids - 1) {
-		// Asteroid is not the last one in the list
-		// - move the last one in the list to this position
-		asteroids[asteroidNumber] = asteroids[numAsteroids - 1];
+	// Close up the gap in the list of projectiles - move any
+	// projectiles after this in the list closer to the start of the list
+	for(uint8_t i = asteroidNumber+1; i < numAsteroids; i++) {
+		asteroids[i-1] = asteroids[i];
 	}
-	asteroids[numAsteroids-1] = INVALID_POSITION;
+	/*asteroids[numAsteroids] = INVALID_POSITION;*/
 	// Last position in asteroids array is no longer used
 	numAsteroids--;
 	
@@ -545,6 +561,7 @@ static void redraw_base(uint8_t colour){
 		}
 	}
 	set_pixel(basePosition, 1, colour);
+	print_terminal_buffer();
 // 	ledmatrix_update_pixel(LED_MATRIX_POSN_FROM_XY(basePosition, 1), colour);
 // 	draw_on_terminal(GAME_POSITION(basePosition, 1), colour, '#');
 }

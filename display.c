@@ -23,6 +23,8 @@
 #define TERM_POS_FROM_GAME_XY(x, y) (x*2+X_LEFT+1), (Y_BOTTOM-1-y)
 #define TERM_POS_FROM_GAME_XY_SWAPPED(x, y) (Y_BOTTOM-1-y), (x*2+X_LEFT+1)
 
+static void draw_pixel(uint8_t x, uint8_t y, uint8_t colour);
+
 uint32_t curState[16];
 uint32_t newState[16];
 
@@ -57,6 +59,8 @@ void set_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 		printf_P(PSTR("FAULT: set_pixel called without frame!"));
 		while (1){}
 	}
+	draw_pixel(x, y, colour);
+	return;
 	uint32_t val;
 	switch (colour) {
 		case COLOUR_BLACK:
@@ -134,6 +138,8 @@ void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 }
 
 void draw_frame() {
+	print_terminal_buffer();
+	return;
 	uint32_t startTime = get_current_time();
 	if (!readingIntoFrame) {
 		printf_P(PSTR("FAULT: draw_frame called without frame!"));

@@ -62,6 +62,7 @@ void print_score(void) {
 	set_display_attribute(TERM_RESET);
 	move_cursor(score_x, score_y);
 	printf("Score:%4lu", score);
+	s_invalidate_mode();
 }
 
 void update_score_tick(void) {

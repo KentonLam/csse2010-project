@@ -110,4 +110,5 @@ void draw_vertical_line(int8_t x, int8_t starty, int8_t endy);
 
 void draw_rectangle(uint8_t start_x, uint8_t start_y, uint8_t width, uint8_t height);
 void fast_set_display_attribute(DisplayParameter mode);
+void s_invalidate_mode();
 #endif /* TERMINAL_IO_H */

@@ -245,6 +245,7 @@ int8_t move_base(int8_t direction) {
 		|| (basePosition == 7 && direction == MOVE_RIGHT))
 		return 0;
 	draw_frame();
+	s_invalidate_mode();
 	// We erase the base from its current position first
 	redraw_base(COLOUR_BLACK);
 	
@@ -291,6 +292,7 @@ void advance_projectiles(void) {
 	int8_t projectileNumber;
 	new_frame();
 	projectileNumber = 0;
+	s_invalidate_mode();
 	while(projectileNumber < numProjectiles) {
 		// Get the current position of the projectile
 		x = GET_X_POSITION(projectiles[projectileNumber]);
@@ -381,10 +383,12 @@ void advance_asteroids() {
 	uint8_t i = 0;
 	uint8_t j = 0;
 	
+	
 	new_frame();
 	set_display_attribute(TERM_RESET);
-	uint8_t oldNumAsteroids = numAsteroids;
-	while (i < oldNumAsteroids) {
+	s_invalidate_mode();
+	/*uint8_t oldNumAsteroids = numAsteroids;*/
+	while (i < numAsteroids) {
 		j++;
 		x = GET_X_POSITION(asteroids[i]);
 		y = GET_Y_POSITION(asteroids[i]);
@@ -397,8 +401,10 @@ void advance_asteroids() {
 			remove_asteroid(i);
 			continue;
 		}
-		if (check_asteroid_hit(projectile_at(x, new_y), i))
+		if (check_asteroid_hit(projectile_at(x, new_y), i)) {
+			s_invalidate_mode();
 			continue;
+		}
 		
 		asteroids[i] = GAME_POSITION(x, new_y);
 		redraw_asteroid(i, COLOUR_ASTEROID);
@@ -435,6 +441,7 @@ uint8_t is_paused() {
 /******** INTERNAL FUNCTIONS ****************/
 
 static void add_missing_asteroids(void) {
+	s_invalidate_mode();
 	for (uint8_t i = numAsteroids; i < MAX_ASTEROIDS; i++) {
 		/*printf_P(PSTR("ADDING MISSING ASTEROID"));*/
 		add_asteroid_in_rows(FIELD_HEIGHT-1);

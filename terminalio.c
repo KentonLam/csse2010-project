@@ -20,7 +20,9 @@ void move_cursor(int x, int y) {
 
 void s_invalidate_mode() {
 	sCurrentMode = 50;
+	currentMode = 50;
 }
+
 
 uint8_t s_move_cursor(char* arr, uint8_t x, uint8_t y){
 	sprintf_P(arr, PSTR("\x1b[%d;%dH"), y, x);

@@ -116,7 +116,6 @@ void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 	} else {
 		switch (colour) {
 			case COLOUR_GREEN:
-			
 			termIndex += s_fast_set_display_attr(termBuffer+termIndex, FG_GREEN);
 			termIndex += sprintf_P(termBuffer+termIndex, PSTR("@"));
 			break;
@@ -138,6 +137,7 @@ void draw_pixel(uint8_t x, uint8_t y, uint8_t colour) {
 }
 
 void draw_frame() {
+	flush_spi_buffer();
 	print_terminal_buffer();
 	return;
 	uint32_t startTime = get_current_time();
